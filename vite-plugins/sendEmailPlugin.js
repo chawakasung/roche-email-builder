@@ -6,10 +6,13 @@ import { resolveBlocks, resolveMerge } from '../src/utils/merge.js';
 
 const RESEND_URL = 'https://api.resend.com/emails';
 
+// 30 MB — generous to allow several base64 image uploads in one email
+const MAX_PAYLOAD = 30_000_000;
+
 function readJson(req) {
   return new Promise((resolve, reject) => {
     let buf = '';
-    req.on('data', c => { buf += c; if (buf.length > 5_000_000) reject(new Error('payload too large')); });
+    req.on('data', c => { buf += c; if (buf.length > MAX_PAYLOAD) reject(new Error('payload too large (>30MB)')); });
     req.on('end', () => { try { resolve(JSON.parse(buf || '{}')); } catch (e) { reject(e); } });
     req.on('error', reject);
   });
