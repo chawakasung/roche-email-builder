@@ -24,20 +24,47 @@ function send(res, code, body) {
   res.end(JSON.stringify(body));
 }
 
+// Extract data: image URLs from the HTML and convert them to inline CID attachments.
+// Gmail strips data: URLs from <img src=""> — CID attachments render in every client and
+// also keep the HTML body small enough to avoid Gmail's 102KB "message clipped" cutoff.
+function extractInlineImages(html) {
+  const attachments = [];
+  const seen = new Map(); // dedupe identical images
+  const re = /data:image\/([a-z0-9+]+);base64,([A-Za-z0-9+/=]+)/gi;
+  const newHtml = html.replace(re, (_, type, base64) => {
+    const key = `${type}|${base64}`;
+    let cid = seen.get(key);
+    if (!cid) {
+      cid = `img${attachments.length + 1}`;
+      seen.set(key, cid);
+      attachments.push({
+        filename: `${cid}.${type === 'svg+xml' ? 'svg' : type === 'jpeg' ? 'jpg' : type}`,
+        content: base64,
+        content_id: cid,
+      });
+    }
+    return `cid:${cid}`;
+  });
+  return { html: newHtml, attachments };
+}
+
 async function sendOne({ apiKey, from, to, subject, html, replyTo }) {
+  const { html: cleanedHtml, attachments } = extractInlineImages(html);
+  const body = {
+    from,
+    to: [to],
+    subject,
+    html: cleanedHtml,
+    ...(replyTo ? { reply_to: replyTo } : {}),
+    ...(attachments.length ? { attachments } : {}),
+  };
   const r = await fetch(RESEND_URL, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      from,
-      to: [to],
-      subject,
-      html,
-      ...(replyTo ? { reply_to: replyTo } : {}),
-    }),
+    body: JSON.stringify(body),
   });
   const data = await r.json().catch(() => ({}));
   return { ok: r.ok, status: r.status, data };
