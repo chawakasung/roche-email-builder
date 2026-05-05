@@ -25,7 +25,7 @@ function App() {
     subject: "Q2 Town Hall — Hi {{first_name}}, here's the agenda",
     preheader: '12 min read · Pipeline updates, people stories, and a message from Thomas',
     fromName: 'Roche Internal Comms',
-    fromEmail: 'comms@roche.com',
+    fromEmail: 'onboarding@resend.dev',
     replyTo: 'no-reply@roche.com',
     brand: { primary: '#0B41CD', heroBg: '#FFF7F5' },
   });
