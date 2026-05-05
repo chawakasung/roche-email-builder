@@ -33,9 +33,11 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
         <p style="font-family:Arial,Helvetica,sans-serif;font-weight:300;font-size:${fs}px;line-height:1.22;color:#000000;margin:0;">${headline}</p>
       </td>`;
 
+      const imgX = props.imgX != null ? props.imgX : 50;
+      const imgY = props.imgY != null ? props.imgY : 50;
       const rightTd = img
-        ? `<td width="340" style="width:340px;height:205px;background:url(${img}) no-repeat center/cover;background-color:#d8d5d0;">&nbsp;</td>`
-        : `<td width="340" style="width:340px;height:205px;background-color:#d8d5d0;">&nbsp;</td>`;
+        ? `<td width="340" valign="middle" bgcolor="#d8d5d0" style="width:340px;height:205px;background-color:#d8d5d0;padding:0;font-size:0;line-height:0;"><img src="${img}" width="340" height="205" alt="" style="display:block;border:0;outline:none;text-decoration:none;width:340px;height:205px;object-fit:cover;object-position:${imgX}% ${imgY}%;" /></td>`
+        : `<td width="340" bgcolor="#d8d5d0" style="width:340px;height:205px;background-color:#d8d5d0;">&nbsp;</td>`;
 
       return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;min-width:750px;">
         <tr height="205">${flipped ? rightTd + leftTd : leftTd + rightTd}</tr>
