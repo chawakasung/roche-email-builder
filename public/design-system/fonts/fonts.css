@@ -1,0 +1,41 @@
+/* Roche custom typefaces by Dalton Maag / Pentagram.
+   Files served from /fonts. */
+
+@font-face { font-family: "Roche Sans"; font-style: normal; font-weight: 300;
+  src: url("RocheSans-Light.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roche Sans"; font-style: italic; font-weight: 300;
+  src: url("RocheSans-LightItalic.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roche Sans"; font-style: normal; font-weight: 400;
+  src: url("RocheSans-Regular.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roche Sans"; font-style: italic; font-weight: 400;
+  src: url("RocheSans-Italic.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roche Sans"; font-style: normal; font-weight: 500;
+  src: url("RocheSans-Medium.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roche Sans"; font-style: italic; font-weight: 500;
+  src: url("RocheSans-MediumItalic.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roche Sans"; font-style: normal; font-weight: 700;
+  src: url("RocheSans-Bold.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roche Sans"; font-style: italic; font-weight: 700;
+  src: url("RocheSans-BoldItalic.woff2") format("woff2"); font-display: swap; }
+
+@font-face { font-family: "Roche Sans Condensed"; font-style: normal; font-weight: 300;
+  src: url("RocheSansCondensed-Light.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roche Sans Condensed"; font-style: italic; font-weight: 300;
+  src: url("RocheSansCondensed-LightItalic.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roche Sans Condensed"; font-style: normal; font-weight: 400;
+  src: url("RocheSansCondensed-Regular.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roche Sans Condensed"; font-style: italic; font-weight: 400;
+  src: url("RocheSansCondensed-Italic.woff2") format("woff2"); font-display: swap; }
+
+@font-face { font-family: "Roche Serif"; font-style: normal; font-weight: 300;
+  src: url("RocheSerif-Light.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roche Serif"; font-style: italic; font-weight: 300;
+  src: url("RocheSerif-LightItalic.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roche Serif"; font-style: normal; font-weight: 400;
+  src: url("RocheSerif-Regular.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roche Serif"; font-style: italic; font-weight: 400;
+  src: url("RocheSerif-Italic.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roche Serif"; font-style: normal; font-weight: 700;
+  src: url("RocheSerif-Bold.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Roche Serif"; font-style: italic; font-weight: 700;
+  src: url("RocheSerif-BoldItalic.woff2") format("woff2"); font-display: swap; }

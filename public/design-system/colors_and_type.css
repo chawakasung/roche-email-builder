@@ -1,0 +1,240 @@
+/* Roche Design System — Colors & Typography
+   Sources: brand.roche.com color & type guidelines; Pentagram brand refresh;
+   Scribd Roche Colour Guideline PDF. Values for Roche Blue (PMS 300), Roche
+   Grey (Cool Gray 5) and standard black/white are canonical; warm accents are
+   reconstructed from brand centre swatches + scribd CMYK values where
+   explicit hex was not published. Flag to user if exact accent hex is
+   available — we will update.
+*/
+
+@import url("./fonts/fonts.css");
+
+:root {
+  /* ——— PRIMARY BLUES (Roche Brand Centre) ————————— */
+  --roche-blue:           #0B41CD;  /* Roche Blue  · PMS 2388 · RGB 11, 65, 205  */
+  --roche-blue-dark:      #022366;  /* Dark Blue   · PMS 662  · RGB 2, 35, 102   */
+  --roche-blue-light:     #1482FA;  /* Light Blue  · PMS 2925 · RGB 20, 130, 250 */
+  --roche-blue-xlight:    #BDE3FF;  /* Extra Light · PMS 291  · RGB 189, 227, 255 */
+  /* legacy aliases */
+  --roche-blue-deep:      var(--roche-blue-dark);
+  --roche-blue-bright:    var(--roche-blue-light);
+
+  /* ——— BASE / NEUTRALS (warm peach) ——————————————
+     Official Roche base neutrals — peach-toned, not beige. */
+  --white:             #FFFFFF;
+  --neutral-1:         #FAC9B5;  /* deepest peach — accent background */
+  --neutral-2:         #FAD6C7;  /* mid peach */
+  --neutral-3:         #FFE8DE;  /* soft peach — USABLE AS BACKGROUND */
+  --neutral-4:         #FFF7F5;  /* whisper peach — USABLE AS BACKGROUND */
+  /* legacy aliases kept for older components */
+  --bg-soft:           var(--neutral-4);
+  --bg-warm:           var(--neutral-3);
+
+  /* ——— GREYS (warm greys) ———————————————————————— */
+  --grey-1:            #544F4F;  /* Warm Gray 11 · text / dark surfaces */
+  --grey-2:            #706B69;  /* Warm Gray 9  · secondary text */
+  --grey-3:            #C2BAB5;  /* Warm Gray 5  · muted */
+  --grey-4:            #DBD6D1;  /* Warm Gray 3  · USABLE AS BACKGROUND */
+  --grey-5:            #F5F5F2;  /* Warm Gray 1  · USABLE AS BACKGROUND */
+  /* legacy aliases */
+  --warm-gray-5:       var(--grey-3);
+  --warm-gray-9:       var(--grey-2);
+  --warm-gray-11:      var(--grey-1);
+  --grey-9:            var(--grey-1);
+  --black:             #000000;
+
+  /* ——— TERTIARY COLOURS (Roche Brand Centre) ——————————
+     RESERVED EXCLUSIVELY for:
+       • Data visualisation and infographics
+       • Illustrations of ecological/sustainability topics
+     cobas* tones are reserved for cobas diagnostic product branding. */
+  --cobas-green:            #00A17D;  /* cobas Green        · PMS Green C */
+  --cobas-green-dark:       #007C6B;  /* cobas Dark Green   · PMS 569 */
+  --cobas-green-light:      #3EBDAD;  /* cobas Light Green  · PMS 7465 */
+  --cobas-green-xlight-1:   #CBEDEB;  /* cobas Extra Light Green 1 · PMS 331 @ 50% */
+  --cobas-green-xlight-2:   #E4F5F1;  /* cobas Extra Light Green 2 · PMS 331 @ 25% */
+
+  --green-xdark:            #104F10;  /* Extra Dark Green · PMS 350 */
+  --green-dark:             #228B22;  /* Dark Green       · PMS 3529 */
+  --green:                  #4CBB17;  /* Green            · PMS 361 */
+  --green-light:            #ACDF87;  /* Light Green      · PMS 358 */
+
+  /* ——— ACCENT COLOURS (Roche Brand Centre) ——————————
+     Reds, oranges, purples. Use for keylines and infographics
+     only — NOT for gradients or backgrounds. */
+  --red-xdark:         #8C0000;  /* Extra Dark Red · PMS 1815 */
+  --red-dark:          #C40000;  /* Dark Red       · PMS 2035 */
+  --red:               #FF1F26;  /* Red            · PMS 032  */
+  --red-light:         #FF8782;  /* Light Red      · PMS 2339 */
+
+  --orange-xdark:      #B22B0D;  /* Extra Dark Orange · PMS 7599 */
+  --orange-dark:       #ED4A0D;  /* Dark Orange       · PMS 1665 */
+  --orange:            #FF7D29;  /* Orange            · PMS 3588 */
+  --orange-light:      #FFBD69;  /* Light Orange      · PMS 1355 */
+
+  --purple-xdark:      #7D0096;  /* Extra Dark Purple · PMS 2623 */
+  --purple-dark:       #BC36F0;  /* Dark Purple       · PMS 2602 */
+  --purple:            #E085FC;  /* Purple            · PMS 514  */
+  --purple-light:      #F2D4FF;  /* Light Purple      · PMS 7436 */
+
+  /* legacy accent aliases → mapped to closest Brand Centre accents */
+  --accent-terracotta: var(--orange-xdark);
+  --accent-clay:       var(--orange-dark);
+  --accent-ochre:      var(--orange);
+  --accent-sand:       var(--orange-light);
+  --accent-sage:       #7C8F6E;
+  --accent-teal:       #2F6D7A;
+  --accent-plum:       var(--purple-xdark);
+  --accent-rose:       var(--red-light);
+
+  /* ——— SEMANTIC FOREGROUND ——————————————————————— */
+  --fg-1:              var(--grey-9);       /* body text */
+  --fg-2:              var(--warm-gray-11); /* secondary */
+  --fg-3:              var(--warm-gray-9);  /* tertiary / captions */
+  --fg-muted:          var(--warm-gray-5);
+  --fg-inverse:        var(--white);
+  --fg-link:           var(--roche-blue);
+  --fg-link-hover:     var(--roche-blue-deep);
+
+  /* ——— SEMANTIC SURFACE —————————————————————————— */
+  --bg:                var(--white);
+  --bg-soft:           var(--neutral-1);
+  --bg-warm:           var(--neutral-2);
+  --bg-inverse:        var(--roche-blue-deep);
+  --bg-dark:           #0A1020;
+
+  /* ——— LINES ———————————————————————————————————— */
+  --keyline:           var(--roche-blue);   /* canonical keyline colour */
+  --hairline:          rgba(10,16,32,0.12);
+  --divider:           rgba(10,16,32,0.08);
+
+  /* ——— STATUS (defensive extension, not in guidelines) ————— */
+  --status-success:    #2F6D3A;
+  --status-warning:    #C28A1F;
+  --status-error:      #B33A2A;
+  --status-info:       var(--roche-blue);
+
+  /* ——— TYPE FAMILIES ————————————————————————————— */
+  --font-sans:         "Roche Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-condensed:    "Roche Sans Condensed", "Roche Sans", "Helvetica Neue Condensed", sans-serif;
+  --font-serif:        "Roche Serif", "Times New Roman", serif;
+  --font-mono:         ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* ——— TYPE SCALE ————————————————————————————————— */
+  --fs-hero:           clamp(3rem, 6vw, 5.5rem);   /* 48–88px */
+  --fs-display:        clamp(2.25rem, 4vw, 3.5rem);/* 36–56px */
+  --fs-h1:             2.5rem;    /* 40 */
+  --fs-h2:             2rem;      /* 32 */
+  --fs-h3:             1.5rem;    /* 24 */
+  --fs-h4:             1.25rem;   /* 20 */
+  --fs-body-lg:        1.125rem;  /* 18 */
+  --fs-body:           1rem;      /* 16 */
+  --fs-small:          0.875rem;  /* 14 */
+  --fs-caption:        0.75rem;   /* 12 */
+
+  --lh-tight:          1.05;
+  --lh-snug:           1.2;
+  --lh-body:           1.5;
+  --lh-loose:          1.65;
+
+  --tracking-tight:    -0.02em;
+  --tracking-normal:   0;
+  --tracking-wide:     0.04em;
+
+  /* ——— SPACING (8-pt base) ——————————————————————— */
+  --sp-1:  4px;   --sp-2:  8px;   --sp-3: 12px;  --sp-4: 16px;
+  --sp-5: 24px;   --sp-6: 32px;   --sp-7: 48px;  --sp-8: 64px;
+  --sp-9: 96px;   --sp-10:128px;
+
+  /* ——— RADII (restrained — mostly square) ———————— */
+  --radius-0: 0;
+  --radius-1: 2px;
+  --radius-2: 4px;
+  --radius-3: 8px;
+  --radius-pill: 999px;
+
+  /* ——— ELEVATION (very subtle — brand leans flat) —— */
+  --shadow-1: 0 1px 2px rgba(10,16,32,0.06);
+  --shadow-2: 0 2px 8px rgba(10,16,32,0.08);
+  --shadow-3: 0 8px 24px rgba(10,16,32,0.10);
+
+  /* ——— MOTION ———————————————————————————————————— */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 120ms;
+  --dur: 220ms;
+  --dur-slow: 400ms;
+}
+
+/* ——— SEMANTIC ELEMENTS ————————————————————————————— */
+html { color: var(--fg-1); background: var(--bg); }
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--fg-1);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
+  font-family: var(--font-sans);
+  font-weight: 500;             /* Medium for headers */
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--lh-snug);
+  color: var(--fg-1);
+  margin: 0 0 var(--sp-4);
+  text-wrap: pretty;
+}
+h1, .h1  { font-size: var(--fs-h1); line-height: var(--lh-tight); }
+h2, .h2  { font-size: var(--fs-h2); }
+h3, .h3  { font-size: var(--fs-h3); }
+h4, .h4  { font-size: var(--fs-h4); font-weight: 500; }
+
+.display {                      /* marketing hero */
+  font-family: var(--font-sans);
+  font-weight: 300;             /* Light — Roche hero look */
+  font-size: var(--fs-display);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+}
+.hero {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: var(--fs-hero);
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+}
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-caption);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+
+p { margin: 0 0 var(--sp-4); max-width: 68ch; }
+.lead { font-size: var(--fs-body-lg); line-height: var(--lh-body); color: var(--fg-2); }
+small, .caption { font-size: var(--fs-caption); color: var(--fg-3); }
+
+.serif { font-family: var(--font-serif); }
+.condensed { font-family: var(--font-condensed); }
+
+a {
+  color: var(--fg-link);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  transition: color var(--dur) var(--ease-out);
+}
+a:hover { color: var(--fg-link-hover); }
+
+code, pre, kbd, samp { font-family: var(--font-mono); font-size: 0.95em; }
+
+hr { border: 0; border-top: 1px solid var(--hairline); margin: var(--sp-6) 0; }
+
+/* Roche "keyline" — hexagon-influenced blue hairline, a signature motif */
+.keyline { border: 1px solid var(--keyline); }
+.keyline-thick { border: 2px solid var(--keyline); }
+
+::selection { background: var(--roche-blue); color: var(--white); }

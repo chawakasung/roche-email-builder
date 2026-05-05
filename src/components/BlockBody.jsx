@@ -1,0 +1,443 @@
+import { Fragment } from 'react';
+import { EditableImage } from './EditableImage.jsx';
+import { LetterBlock } from './LetterBlock.jsx';
+import { RocheLogo } from './RocheLogo.jsx';
+
+// Resolve {{merge_tags}} against a row
+export function resolveMerge(text, row) {
+  if (!text || !row) return text;
+  return String(text).replace(/\{\{(\w+)\}\}/g, (_, k) => row[k] != null ? row[k] : `{{${k}}}`);
+}
+
+export function resolveBlockProps(props, row) {
+  const out = {};
+  for (const k in props) {
+    out[k] = typeof props[k] === 'string' ? resolveMerge(props[k], row) : props[k];
+  }
+  return out;
+}
+
+// Rendered block — what shows in the canvas + final email
+export function BlockBody({ kind, props, brand, editing, onEdit, onCloseLetter }) {
+  const ce = (key) => editing
+    ? { contentEditable: true, suppressContentEditableWarning: true, onBlur: e => onEdit(key, e.currentTarget.innerText) }
+    : {};
+
+  switch (kind) {
+    case 'header': return <HeaderBlock props={props} editing={editing} onEdit={onEdit} ce={ce} />;
+    case 'hero': return (
+      <div className="e-hero" style={{ background: brand.heroBg }}>
+        {(props.img || editing) && <div className="e-hero__media"><EditableImage src={props.img} editing={editing} onReplace={v => onEdit('img', v)} widthPct={100} heightPx={props.img_h} onResize={(_w,h) => onEdit('img_h', h)} defaultHeight={300} allowResize={true} /></div>}
+        <div className="e-hero__body">
+          {props.eyebrow && <p className="e-hero__eyebrow" {...ce('eyebrow')}>{props.eyebrow}</p>}
+          <h1 className="e-hero__title" {...ce('title')}>{props.title}</h1>
+          <p className="e-hero__copy" {...ce('copy')}>{props.copy}</p>
+          {props.cta && <a className="e-hero__btn" style={{ background: brand.primary }} {...ce('cta')}>{props.cta}</a>}
+        </div>
+      </div>
+    );
+    case 'text': {
+      const hasBgImg = !!props.bg_img;
+      const bgColor = props.bg_color || '';
+      const isDark = hasBgImg || ['#0066CC','#003366','#1a1a1a','#000000'].includes(bgColor);
+      const textColor = isDark ? '#ffffff' : 'inherit';
+      const blockStyle = {
+        ...(bgColor ? { backgroundColor: bgColor } : {}),
+        ...(hasBgImg ? {
+          backgroundImage: `url(${props.bg_img})`,
+          backgroundSize: props.bg_scale ? `${props.bg_scale}%` : 'cover',
+          backgroundPosition: props.bg_pos || 'center center',
+          backgroundColor: bgColor || '#1a1a1a',
+        } : {}),
+      };
+      return (
+        <div className="e-text" style={blockStyle}>
+          {hasBgImg && <div style={{ position:'absolute', inset:0, background:'rgba(0,0,0,0.45)', pointerEvents:'none' }} />}
+          <div style={{ position:'relative', color: textColor }}>
+            {props.heading && <h2 style={{ color: textColor }} {...ce('heading')}>{props.heading}</h2>}
+            <div {...ce('copy')}>{(props.copy || '').split(/\n\n+/).map((p, i) => <p key={i} style={{ color: textColor }}>{p}</p>)}</div>
+          </div>
+        </div>
+      );
+    }
+    case 'letter': return (
+      <LetterBlock html={props.html} align={props.align} editing={editing} onEdit={onEdit} onClose={onCloseLetter} />
+    );
+    case 'image': return (
+      <div className="e-image">
+        <EditableImage src={props.img} editing={editing} onReplace={v => onEdit('img', v)} widthPct={props.img_w} heightPx={props.img_h} onResize={(w,h) => { onEdit('img_w', w); onEdit('img_h', h); }} defaultHeight={260} />
+        {props.caption && <div className="e-image__cap" {...ce('caption')}>{props.caption}</div>}
+      </div>
+    );
+    case 'gallery': return (
+      <div className="e-gallery">
+        {['img1','img2','img3'].map(k => (
+          <EditableImage key={k} src={props[k]} editing={editing} onReplace={v => onEdit(k, v)} widthPct={100} heightPx={props[k+'_h']} onResize={(_w,h) => onEdit(k+'_h', h)} defaultHeight={140} />
+        ))}
+      </div>
+    );
+    case 'twocol': return (
+      <div className="e-2col">
+        {['a','b'].map(k => (
+          <div className="e-col__item" key={k}>
+            <EditableImage src={props[k+'_img']} editing={editing} onReplace={v => onEdit(k+'_img', v)} widthPct={100} heightPx={props[k+'_img_h']} onResize={(_w,h) => onEdit(k+'_img_h', h)} defaultHeight={140} />
+            <h3 {...ce(k+'_title')}>{props[k+'_title']}</h3>
+            <p {...ce(k+'_copy')}>{props[k+'_copy']}</p>
+            <a style={{ color: brand.primary }} href={props[k+'_href'] || '#'} {...ce(k+'_cta')}>{props[k+'_cta']}</a>
+          </div>
+        ))}
+      </div>
+    );
+    case 'threecol': return (
+      <div className="e-3col">
+        {['a','b','c'].map(k => (
+          <div className="e-col__item" key={k}>
+            <EditableImage src={props[k+'_img']} editing={editing} onReplace={v => onEdit(k+'_img', v)} widthPct={100} heightPx={props.img_h} onResize={(_w,h) => onEdit('img_h', h)} defaultHeight={110} />
+            <h3 {...ce(k+'_title')}>{props[k+'_title']}</h3>
+            <p {...ce(k+'_copy')}>{props[k+'_copy']}</p>
+            {props[k+'_cta'] && <a style={{ color: brand.primary }} href={props[k+'_href'] || '#'} {...ce(k+'_cta')}>{props[k+'_cta']}</a>}
+          </div>
+        ))}
+      </div>
+    );
+    case 'storylist': return <StoryListBlock props={props} editing={editing} brand={brand} onEdit={onEdit} ce={ce} />;
+    case 'button': return (
+      <div className="e-button-wrap" style={{ textAlign: props.align || 'center' }}>
+        <a className="e-button" style={{ background: brand.primary }} href={props.href} {...ce('label')}>{props.label}</a>
+      </div>
+    );
+    case 'divider': return <div className="e-divider-wrap"><div className="e-divider" /></div>;
+    case 'quote': return (
+      <div className="e-quote">
+        <div className="e-quote__inner" style={{ borderLeftColor: brand.primary, maxWidth: (props.width ?? 100) + '%', marginLeft: 'auto', marginRight: 'auto' }}>
+          <p {...ce('text')}>"{props.text}"</p>
+          {props.attrib && <cite {...ce('attrib')}>— {props.attrib}</cite>}
+        </div>
+      </div>
+    );
+    case 'video': return (
+      <div className="e-video">
+        <div className="e-video__frame">
+          <img src={props.thumb} alt="" />
+          <div className="e-video__play"><div className="circ"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4" /></svg></div></div>
+        </div>
+        {props.caption && <div className="e-video__cap" {...ce('caption')}>{props.caption}</div>}
+      </div>
+    );
+    case 'podcast': return <PodcastBlock props={props} brand={brand} ce={ce} />;
+    case 'language': return <LanguageBlock props={props} brand={brand} ce={ce} />;
+    case 'mediaform': return <MediaFormBlock props={props} brand={brand} />;
+    case 'footer': return (
+      <div className="e-footer">
+        <img src="/design-system/assets/roche-logo-blue.svg" alt="Roche" />
+        <div className="e-footer__addr" {...ce('address')}>{props.address}</div>
+        <div className="e-footer__rule" />
+        <div {...ce('links')}>{props.links}</div>
+        <div className="e-footer__legal" {...ce('legal')}>{props.legal}</div>
+      </div>
+    );
+    default: return null;
+  }
+}
+
+// ─── Header (Email Banner) ─────────────────────
+function HeaderBlock({ props, editing, onEdit, ce }) {
+  const flipped = !!props.flipped;
+  const showLogo = props.showLogo !== false;
+  const bg = props.bgColor || '#FFF7F5';
+  const fontSize = Number(props.fontSize) || 26;
+  const headline = props.headline || 'A passion for impossible discovery';
+  const imgX = props.imgX != null ? props.imgX : 50;
+  const imgY = props.imgY != null ? props.imgY : 50;
+  const logoFill = flipped ? '#ffffff' : '#0B41CD';
+
+  const onImgDown = (e) => {
+    if (!editing || !props.img) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const target = e.currentTarget;
+    const rect = target.getBoundingClientRect();
+    const startPt = e.touches ? e.touches[0] : e;
+    const startX = startPt.clientX, startY = startPt.clientY;
+    const startImgX = imgX, startImgY = imgY;
+    const move = (ev) => {
+      const pt = ev.touches ? ev.touches[0] : ev;
+      const dx = pt.clientX - startX;
+      const dy = pt.clientY - startY;
+      const nx = Math.max(0, Math.min(100, startImgX - (dx / rect.width) * 100));
+      const ny = Math.max(0, Math.min(100, startImgY - (dy / rect.height) * 100));
+      target.style.backgroundPosition = `${nx}% ${ny}%`;
+      target._nx = nx; target._ny = ny;
+      if (ev.preventDefault) ev.preventDefault();
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+      window.removeEventListener('touchmove', move);
+      window.removeEventListener('touchend', up);
+      if (target._nx != null) {
+        onEdit('imgX', target._nx);
+        onEdit('imgY', target._ny);
+      }
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+    window.addEventListener('touchmove', move, { passive: false });
+    window.addEventListener('touchend', up);
+  };
+
+  const onPickBanner = (e) => {
+    e.stopPropagation();
+    const inp = document.createElement('input');
+    inp.type = 'file';
+    inp.accept = 'image/*';
+    inp.onchange = (ev) => {
+      const f = ev.target.files?.[0];
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = () => onEdit('img', r.result);
+      r.readAsDataURL(f);
+    };
+    inp.click();
+  };
+
+  const leftPanel = (
+    <div className="e-banner__left" style={{ background: bg }}>
+      <div
+        className="e-banner__text"
+        style={{ fontSize: fontSize + 'px', marginLeft: showLogo ? 100 : 0 }}
+        {...ce('headline')}
+      >{headline}</div>
+    </div>
+  );
+
+  const rightPanel = (
+    <div
+      className={'e-banner__right' + (props.img ? '' : ' is-empty')}
+      style={props.img ? {
+        backgroundImage: `url(${props.img})`,
+        backgroundPosition: `${imgX}% ${imgY}%`,
+      } : null}
+      onMouseDown={onImgDown}
+      onTouchStart={onImgDown}
+      onClick={!props.img && editing ? onPickBanner : undefined}
+    >
+      {!props.img && (
+        <div className="e-banner__ph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="1"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+          <span>Click to add image</span>
+        </div>
+      )}
+      {props.img && editing && (
+        <>
+          <button className="e-banner__replace" onClick={onPickBanner} onMouseDown={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()}>⇄ Replace</button>
+          <div className="e-banner__drag-hint">⤧ Drag to reposition</div>
+        </>
+      )}
+    </div>
+  );
+
+  return (
+    <div className="e-banner e-banner--split">
+      <div className="e-banner__scaler" ref={el => {
+        if (!el || el._observed) return;
+        el._observed = true;
+        const apply = () => {
+          const w = el.clientWidth;
+          if (!w) return;
+          const scale = w / 750;
+          const wrap = el.firstChild;
+          if (wrap) {
+            wrap.style.transform = `scale(${scale})`;
+            wrap.style.transformOrigin = 'top left';
+          }
+          el.style.height = (205 * scale) + 'px';
+        };
+        apply();
+        const ro = new ResizeObserver(apply);
+        ro.observe(el);
+      }}>
+        <div className="e-banner__wrap">
+          {showLogo && (
+            <div className="e-banner__logo"><RocheLogo fill={logoFill} /></div>
+          )}
+          {flipped ? rightPanel : leftPanel}
+          {flipped ? leftPanel : rightPanel}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StoryListBlock({ props, editing, brand, onEdit, ce }) {
+  const count = Math.max(1, Math.min(6, Number(props.count) || 3));
+  const imgH = props.img_h || 160;
+  const addRow = () => {
+    const n = count + 1;
+    if (n > 6) return;
+    const k = 's' + n;
+    onEdit('count', n);
+    if (!props[k + '_title']) {
+      onEdit(k + '_title', 'New story');
+      onEdit(k + '_copy', 'Description here.');
+      onEdit(k + '_cta', 'Read more →');
+      onEdit(k + '_href', 'https://roche.com');
+    }
+  };
+  const removeRow = () => { if (count > 1) onEdit('count', count - 1); };
+
+  const rows = [];
+  for (let i = 1; i <= count; i++) {
+    const k = 's' + i;
+    rows.push(
+      <Fragment key={i}>
+        <div className="e-storylist__row">
+          <EditableImage
+            src={props[k + '_img']} editing={editing}
+            onReplace={(v) => onEdit(k + '_img', v)}
+            widthPct={100} heightPx={imgH}
+            onResize={() => {}}
+            defaultHeight={imgH}
+            allowResize={false}
+            className="e-storylist__img"
+          />
+          <div className="e-storylist__body">
+            <h3 className="e-storylist__title" {...ce(k + '_title')}>{props[k + '_title'] || 'Story title'}</h3>
+            <p className="e-storylist__copy" {...ce(k + '_copy')}>{props[k + '_copy'] || 'Description'}</p>
+            <a className="e-storylist__link" href={props[k + '_href'] || '#'} style={{ color: brand.primary }}
+              {...ce(k + '_cta')}>{props[k + '_cta'] || 'Read more →'}</a>
+          </div>
+        </div>
+        {i < count && <div className="e-storylist__divider" />}
+      </Fragment>
+    );
+  }
+
+  return (
+    <div className="e-storylist">
+      {rows}
+      {editing && (
+        <div className="e-storylist__actions">
+          <button className="e-storylist__add" onClick={(e) => { e.stopPropagation(); addRow(); }} title="Add story row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          {count > 1 && (
+            <button className="e-storylist__add" style={{ borderColor: 'var(--red-light)', color: 'var(--red-dark)' }} onClick={(e) => { e.stopPropagation(); removeRow(); }} title="Remove last row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PodcastBlock({ props, brand, ce }) {
+  return (
+    <div className="e-podcast">
+      <div className="e-podcast__card">
+        <div className="e-podcast__art">
+          {props.artwork ? <img src={props.artwork} alt="" /> : <div className="e-podcast__art-ph" />}
+          <div className="e-podcast__art-overlay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="9" y="3" width="6" height="11" rx="3"/>
+              <path d="M5 11a7 7 0 0 0 14 0"/>
+              <line x1="12" y1="18" x2="12" y2="21"/>
+              <line x1="9" y1="21" x2="15" y2="21"/>
+            </svg>
+          </div>
+        </div>
+        <div className="e-podcast__body">
+          <div className="e-podcast__show" {...ce('show')}>{props.show}</div>
+          <div className="e-podcast__episode" {...ce('episode')}>{props.episode}</div>
+          <div className="e-podcast__host" {...ce('host')}>{props.host}</div>
+          <div className="e-podcast__player">
+            <button className="e-podcast__play" style={{ background: brand.primary }}>
+              <svg viewBox="0 0 24 24" fill="#fff"><polygon points="7 4 21 12 7 20 7 4"/></svg>
+            </button>
+            <div className="e-podcast__progress">
+              <div className="e-podcast__bar"><div style={{ background: brand.primary }} /></div>
+              <div className="e-podcast__times">
+                <span>0:00</span>
+                <span {...ce('duration')}>{props.duration}</span>
+              </div>
+            </div>
+            <div className="e-podcast__waveform" aria-hidden="true">
+              {Array.from({length: 28}).map((_, i) => {
+                const h = 30 + Math.abs(Math.sin((i+1)*1.7)) * 70;
+                return <span key={i} style={{ height: h+'%', background: i < 8 ? brand.primary : 'var(--grey-3)' }} />;
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LanguageBlock({ props, brand, ce }) {
+  const langs = (props.languages || '').split('|').map(s => s.trim()).filter(Boolean);
+  return (
+    <div className="e-language">
+      <div className="e-language__note" {...ce('note')}>{props.note}</div>
+      <div className="e-language__prompt" {...ce('prompt')}>{props.prompt}</div>
+      <div className="e-language__row">
+        <span className="e-language__examples" {...ce('examples')}>{props.examples}</span>
+        <span className="e-language__links">
+          {langs.map((s, i) => (
+            <Fragment key={i}>
+              {i > 0 && <span className="e-language__sep">/</span>}
+              <a href="#" style={{ color: brand.primary }}>{s}</a>
+            </Fragment>
+          ))}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function MediaFormBlock({ props, brand }) {
+  const fields = [
+    props.show_name     && { key:'name',     label:'Name',                  required:true },
+    props.show_surname  && { key:'surname',  label:'Surname',               required:true },
+    props.show_position && { key:'position', label:'Position / Specialty',  required:false },
+    props.show_org      && { key:'org',      label:'Organization',          required:false },
+    props.show_email    && { key:'email',    label:'Email',                 required:true, type:'email' },
+    props.show_medid    && { key:'medid',    label:'Medical Technician ID', required:false },
+  ].filter(Boolean);
+  return (
+    <div className="e-mediaform">
+      {props.title && <h2 className="e-mediaform__title">{props.title}</h2>}
+      <div className="e-mediaform__grid">
+        {fields.map(f => (
+          <div className="e-mediaform__field" key={f.key}>
+            <label className="e-mediaform__label">{f.label}{f.required && <span className="e-mediaform__req">*</span>}</label>
+            <input className="e-mediaform__input" type={f.type || 'text'} disabled />
+          </div>
+        ))}
+      </div>
+      <div className="e-mediaform__checks">
+        {props.show_chk1 && (
+          <label className="e-mediaform__check">
+            <input type="checkbox" disabled />
+            <span>I would like to receive information from Roche</span>
+          </label>
+        )}
+        {props.show_chk2 && (
+          <label className="e-mediaform__check">
+            <input type="checkbox" disabled />
+            <span>I agree to allow Roche to use and store the personal data provided by me to send me marketing communications.</span>
+          </label>
+        )}
+      </div>
+      <div className="e-mediaform__footer">
+        <button className="e-mediaform__submit" style={{ background: brand.primary }} disabled>{props.submit_label || 'Submit'}</button>
+        <p className="e-mediaform__privacy">By clicking submit, you agree to Roche's <a href="https://www.roche.com/privacy-policy" style={{ color: brand.primary }}>Privacy Policy</a>.</p>
+      </div>
+    </div>
+  );
+}
