@@ -13,7 +13,20 @@ export function SendModal({ blocks, settings, onClose, lang, onToast }) {
   const [phase, setPhase] = useState('compose');
   const [progress, setProgress] = useState(0);
   const [dropOver, setDropOver] = useState(false);
+  const [sendError, setSendError] = useState(null);
+  const [sendStats, setSendStats] = useState({ sent: 0, total: 0 });
   const fileRef = useRef(null);
+
+  async function callSendAPI(targets, isTest) {
+    const r = await fetch('/api/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ blocks, settings, recipients: targets, test: isTest }),
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
+    return data;
+  }
 
   const validCount = recipients.filter(r => isValidEmail(r.email)).length;
   const invalidCount = recipients.length - validCount;
@@ -45,22 +58,41 @@ export function SendModal({ blocks, settings, onClose, lang, onToast }) {
   }
   function clearList() { setRecipients([]); setHeaders([]); }
 
-  function startSend() {
+  async function startSend() {
     if (validCount === 0) { onToast(lang === 'th' ? 'ยังไม่มีผู้รับที่ถูกต้อง' : 'No valid recipients'); return; }
+    const targets = recipients.filter(r => isValidEmail(r.email));
+    setSendError(null);
+    setProgress(10);
     setPhase('sending');
-    let p = 0;
-    const total = validCount;
-    const tick = () => {
-      p += Math.max(1, Math.floor(total / 18));
-      setProgress(Math.min(100, Math.round((p / total) * 100)));
-      if (p >= total) { setPhase('sent'); }
-      else setTimeout(tick, 220);
-    };
-    setTimeout(tick, 300);
+    try {
+      const data = await callSendAPI(targets, false);
+      setProgress(100);
+      setSendStats({ sent: data.sent, total: data.total });
+      setPhase('sent');
+      const failures = data.results?.filter(x => !x.ok) || [];
+      if (failures.length) {
+        console.warn('Failed recipients:', failures);
+      }
+    } catch (e) {
+      setSendError(e.message);
+      setPhase('compose');
+      onToast((lang === 'th' ? 'ส่งล้มเหลว: ' : 'Send failed: ') + e.message);
+    }
   }
-  function sendTest() {
+  async function sendTest() {
     if (!isValidEmail(testEmail)) { onToast(lang === 'th' ? 'อีเมลไม่ถูกต้อง' : 'Enter a valid email'); return; }
-    onToast((lang === 'th' ? 'ส่งอีเมลทดสอบไปที่ ' : 'Test email sent to ') + testEmail);
+    try {
+      const target = { email: testEmail, first_name: 'Test', last_name: 'User', department: 'Test' };
+      const data = await callSendAPI([target], true);
+      const failure = data.results?.find(x => !x.ok);
+      if (failure) {
+        onToast((lang === 'th' ? 'ส่งทดสอบล้มเหลว: ' : 'Test failed: ') + failure.error);
+      } else {
+        onToast((lang === 'th' ? 'ส่งอีเมลทดสอบไปที่ ' : 'Test email sent to ') + testEmail);
+      }
+    } catch (e) {
+      onToast((lang === 'th' ? 'ส่งทดสอบล้มเหลว: ' : 'Test failed: ') + e.message);
+    }
   }
 
   return (
@@ -81,8 +113,8 @@ export function SendModal({ blocks, settings, onClose, lang, onToast }) {
               <div className="sending__title">{lang === 'th' ? 'กำลังส่งอีเมล…' : 'Sending your email…'}</div>
               <div className="sending__sub">
                 {lang === 'th'
-                  ? `ส่งไปแล้ว ${Math.round(validCount * progress / 100)} / ${validCount} ฉบับ`
-                  : `Sent ${Math.round(validCount * progress / 100)} of ${validCount} messages`}
+                  ? `กำลังประมวลผล ${validCount} รายการ`
+                  : `Processing ${validCount} recipients`}
               </div>
               <div className="sending__bar"><div style={{ width: progress + '%' }} /></div>
             </div>
@@ -92,11 +124,11 @@ export function SendModal({ blocks, settings, onClose, lang, onToast }) {
             <div className="sent-success">
               <svg viewBox="0 0 24 24" className="check"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg>
               <h3>{lang === 'th' ? 'ส่งอีเมลสำเร็จ' : 'Email sent successfully'}</h3>
-              <p>{lang === 'th' ? `อีเมลถูกส่งไปยังผู้รับทั้งหมด ${validCount} ราย` : `Your email reached ${validCount} recipients without issue.`}</p>
+              <p>{lang === 'th' ? `อีเมลถูกส่งไปยังผู้รับทั้งหมด ${sendStats.sent} ราย` : `Your email reached ${sendStats.sent} of ${sendStats.total} recipients.`}</p>
               <div className="stats">
-                <div><div className="n">{validCount}</div><div className="l">{lang === 'th' ? 'ส่งแล้ว' : 'Delivered'}</div></div>
-                <div><div className="n">0</div><div className="l">{lang === 'th' ? 'ตีกลับ' : 'Bounced'}</div></div>
-                <div><div className="n">{Math.round(validCount * 0.6)}</div><div className="l">{lang === 'th' ? 'คาดว่าเปิด' : 'Est. opens'}</div></div>
+                <div><div className="n">{sendStats.sent}</div><div className="l">{lang === 'th' ? 'ส่งแล้ว' : 'Delivered'}</div></div>
+                <div><div className="n">{sendStats.total - sendStats.sent}</div><div className="l">{lang === 'th' ? 'ล้มเหลว' : 'Failed'}</div></div>
+                <div><div className="n">{Math.round(sendStats.sent * 0.6)}</div><div className="l">{lang === 'th' ? 'คาดว่าเปิด' : 'Est. opens'}</div></div>
               </div>
             </div>
           </div>
