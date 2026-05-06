@@ -26,8 +26,7 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
       if (props._renderedImg) {
         const alt = esc(props.headline || 'Email banner');
         return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
-          <tr><td style="padding:0;font-size:0;line-height:0;"><img src="${props._renderedImg}" width="750" alt="${alt}" style="display:block;border:0;outline:none;text-decoration:none;width:100%;max-width:750px;height:auto;" /></td></tr>
-          <tr><td style="height:40px;font-size:0;line-height:0;">&nbsp;</td></tr>
+          <tr><td style="padding:0 0 40px;font-size:0;line-height:0;mso-line-height-rule:exactly;"><img src="${props._renderedImg}" width="750" alt="${alt}" style="display:block;border:0;outline:none;text-decoration:none;width:100%;max-width:750px;height:auto;" /></td></tr>
         </table>`;
       }
       // Fallback: HTML/CSS layout (used by HTML download, where we don't rasterise)
@@ -49,9 +48,12 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
         ? `<td class="banner-cell banner-cell--img" width="340" valign="middle" bgcolor="#d8d5d0" style="width:340px;height:205px;background-color:#d8d5d0;padding:0;font-size:0;line-height:0;"><img class="banner-img" src="${img}" width="340" height="205" alt="" style="display:block;border:0;outline:none;text-decoration:none;width:340px;height:205px;object-fit:cover;object-position:${imgX}% ${imgY}%;" /></td>`
         : `<td class="banner-cell banner-cell--img" width="340" bgcolor="#d8d5d0" style="width:340px;height:205px;background-color:#d8d5d0;">&nbsp;</td>`;
 
-      return `<table role="presentation" class="banner-table" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
-        <tr>${flipped ? rightTd + leftTd : leftTd + rightTd}</tr>
-        <tr><td colspan="2" style="height:40px;font-size:0;line-height:0;">&nbsp;</td></tr>
+      return `<table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr><td style="padding:0 0 40px;font-size:0;line-height:0;mso-line-height-rule:exactly;">
+          <table role="presentation" class="banner-table" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
+            <tr>${flipped ? rightTd + leftTd : leftTd + rightTd}</tr>
+          </table>
+        </td></tr>
       </table>`;
     }
 
