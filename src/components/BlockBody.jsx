@@ -102,6 +102,34 @@ export function BlockBody({ kind, props, brand, editing, onEdit, onCloseLetter }
         <a className="e-notice__link" style={{ color: brand.primary }} href={props.linkHref || '#'} {...ce('linkText')}>{props.linkText}</a>
       </div>
     );
+    case 'webinar': return (
+      <div className="e-webinar">
+        <div className="e-webinar__banner" style={{ height: (Number(props.bannerH) || 280) + 'px' }}>
+          <EditableImage src={props.bannerImg} editing={editing} onReplace={v => onEdit('bannerImg', v)} widthPct={100} heightPx={Number(props.bannerH) || 280} onResize={(_w, h) => onEdit('bannerH', h)} defaultHeight={280} allowResize={true} />
+        </div>
+        <div className="e-webinar__body">
+          <h1 className="e-webinar__title" {...ce('title')}>{props.title}</h1>
+          <p className="e-webinar__desc" {...ce('description')}>{props.description}</p>
+          <div className="e-webinar__speaker">
+            <div className="e-webinar__speaker-img">
+              <EditableImage src={props.speakerImg} editing={editing} onReplace={v => onEdit('speakerImg', v)} widthPct={100} heightPx={160} defaultHeight={160} allowResize={false} />
+            </div>
+            <div className="e-webinar__speaker-info">
+              <h3 className="e-webinar__speaker-name" {...ce('speakerName')}>{props.speakerName}</h3>
+              <p className="e-webinar__speaker-credentials" {...ce('speakerInfo')}>{props.speakerInfo}</p>
+            </div>
+          </div>
+          <div className="e-webinar__when">
+            <p className="e-webinar__date" style={{ color: brand.primary }} {...ce('date')}>{props.date}</p>
+            <p className="e-webinar__time" style={{ color: brand.primary }} {...ce('time')}>{props.time}</p>
+          </div>
+          <p className="e-webinar__disclaimer" {...ce('disclaimer')}>{props.disclaimer}</p>
+          <div className="e-webinar__cta-wrap">
+            <a className="e-webinar__cta" style={{ background: brand.primary }} href={props.ctaHref || '#'} {...ce('ctaLabel')}>{props.ctaLabel}</a>
+          </div>
+        </div>
+      </div>
+    );
     case 'quote': return (
       <div className="e-quote">
         <div className="e-quote__inner" style={{ borderLeftColor: brand.primary, maxWidth: (props.width ?? 100) + '%', marginLeft: 'auto', marginRight: 'auto' }}>

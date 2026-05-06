@@ -234,6 +234,53 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
       </table>`;
     }
 
+    case 'webinar': {
+      const bannerImg = props.bannerImg || '';
+      const bannerH = Number(props.bannerH) || 280;
+      const title = esc(props.title || '');
+      const description = esc(props.description || '');
+      const speakerImg = props.speakerImg || '';
+      const speakerName = esc(props.speakerName || '');
+      const speakerInfo = esc(props.speakerInfo || '');
+      const date = esc(props.date || '');
+      const time = esc(props.time || '');
+      const disclaimer = esc(props.disclaimer || '');
+      const ctaLabel = esc(props.ctaLabel || 'Register');
+      const ctaHref = esc(props.ctaHref || '#');
+      return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="background-color:#ffffff;">
+        ${bannerImg ? `<tr><td bgcolor="#0B2154" style="background-color:#0B2154;padding:0;font-size:0;line-height:0;"><img src="${bannerImg}" width="750" height="${bannerH}" alt="" style="display:block;width:100%;max-width:750px;height:${bannerH}px;object-fit:cover;" /></td></tr>` : ''}
+        <tr><td style="padding:32px 40px 8px;">
+          <h1 style="font-family:Arial,Helvetica,sans-serif;font-weight:300;font-size:30px;line-height:1.15;letter-spacing:-0.01em;color:#544F4F;margin:0 0 24px;">${title}</h1>
+          <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:16px;line-height:1.55;color:#544F4F;margin:0 0 28px;">${description}</p>
+        </td></tr>
+        <tr><td style="padding:0 40px 8px;">
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+              <td class="stack-column" width="180" valign="top" style="vertical-align:top;padding:0 20px 0 0;">
+                ${speakerImg ? `<img class="webinar-speaker-img" src="${speakerImg}" width="160" height="160" alt="${speakerName}" style="display:block;width:160px;height:160px;border-radius:80px;object-fit:cover;background-color:#DBD6D1;" />` : `<div style="width:160px;height:160px;border-radius:80px;background-color:#DBD6D1;">&nbsp;</div>`}
+              </td>
+              <td class="stack-column" valign="top" style="vertical-align:top;">
+                <h3 style="font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:16px;line-height:1.4;color:#544F4F;margin:0 0 6px;">${speakerName}</h3>
+                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:14px;line-height:1.5;color:#544F4F;margin:0;">${speakerInfo}</p>
+              </td>
+            </tr>
+          </table>
+        </td></tr>
+        <tr><td style="padding:24px 40px 0;">
+          <p style="font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:18px;line-height:1.3;color:${primary};margin:0 0 4px;">${date}</p>
+          <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:18px;line-height:1.3;color:${primary};margin:0 0 16px;">${time}</p>
+          <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:13px;line-height:1.5;color:#706B69;margin:0;">${disclaimer}</p>
+        </td></tr>
+        <tr><td align="center" style="padding:32px 40px 40px;text-align:center;">
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto;">
+            <tr><td bgcolor="${primary}" style="background-color:${primary};">
+              <a href="${ctaHref}" style="display:inline-block;padding:16px 96px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:400;color:#ffffff;text-decoration:none;background-color:${primary};">${ctaLabel}</a>
+            </td></tr>
+          </table>
+        </td></tr>
+      </table>`;
+    }
+
     case 'quote': {
       const text = esc(props.text || '');
       const attrib = esc(props.attrib || '');
@@ -362,6 +409,8 @@ export function generateEmailHTML(blocks, settings) {
     img { max-width: 100% !important; height: auto !important; }
     /* Column images: full-width, fixed crop height so all images line up */
     .col-img { width: 100% !important; height: 220px !important; max-height: 220px !important; object-fit: cover !important; margin-bottom: 10px !important; }
+    /* Webinar speaker photo stays circular even when its column stacks */
+    .webinar-speaker-img { width: 140px !important; height: 140px !important; max-width: 140px !important; max-height: 140px !important; border-radius: 70px !important; margin: 0 auto 16px !important; }
     /* Banner: stack cells vertically and scale image to width */
     .banner-table, .banner-table tr, .banner-table tbody { display: block !important; width: 100% !important; }
     .banner-cell { display: block !important; width: 100% !important; height: auto !important; box-sizing: border-box !important; }
