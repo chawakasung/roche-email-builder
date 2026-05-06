@@ -25,10 +25,8 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
       // identical to the canvas, sidesteps every email-client CSS quirk.
       if (props._renderedImg) {
         const alt = esc(props.headline || 'Email banner');
-        const spacer = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
         return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
           <tr><td style="padding:0;font-size:0;line-height:0;"><img src="${props._renderedImg}" width="750" alt="${alt}" style="display:block;border:0;outline:none;text-decoration:none;width:100%;max-width:750px;height:auto;" /></td></tr>
-          <tr><td height="72" style="height:72px;line-height:72px;font-size:0;mso-line-height-rule:exactly;"><img src="${spacer}" width="1" height="72" alt="" style="display:block;border:0;outline:none;width:1px;height:72px;" /></td></tr>
         </table>`;
       }
       // Fallback: HTML/CSS layout (used by HTML download, where we don't rasterise)
@@ -50,14 +48,8 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
         ? `<td class="banner-cell banner-cell--img" width="340" valign="middle" bgcolor="#d8d5d0" style="width:340px;height:205px;background-color:#d8d5d0;padding:0;font-size:0;line-height:0;"><img class="banner-img" src="${img}" width="340" height="205" alt="" style="display:block;border:0;outline:none;text-decoration:none;width:340px;height:205px;object-fit:cover;object-position:${imgX}% ${imgY}%;" /></td>`
         : `<td class="banner-cell banner-cell--img" width="340" bgcolor="#d8d5d0" style="width:340px;height:205px;background-color:#d8d5d0;">&nbsp;</td>`;
 
-      const spacer = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-      return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
-        <tr><td style="padding:0;font-size:0;line-height:0;">
-          <table role="presentation" class="banner-table" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
-            <tr>${flipped ? rightTd + leftTd : leftTd + rightTd}</tr>
-          </table>
-        </td></tr>
-        <tr><td height="72" style="height:72px;line-height:72px;font-size:0;mso-line-height-rule:exactly;"><img src="${spacer}" width="1" height="72" alt="" style="display:block;border:0;outline:none;width:1px;height:72px;" /></td></tr>
+      return `<table role="presentation" class="banner-table" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
+        <tr>${flipped ? rightTd + leftTd : leftTd + rightTd}</tr>
       </table>`;
     }
 
@@ -227,6 +219,18 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
       const spacer = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
       return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
         <tr><td height="${h}" style="height:${h}px;line-height:${h}px;font-size:0;mso-line-height-rule:exactly;"><img src="${spacer}" width="1" height="${h}" alt="" style="display:block;border:0;outline:none;width:1px;height:${h}px;" /></td></tr>
+      </table>`;
+    }
+
+    case 'notice': {
+      const note = esc(props.note || '');
+      const linkText = esc(props.linkText || '');
+      const linkHref = esc(props.linkHref || '#');
+      return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0">
+        <tr><td align="right" style="padding:8px 32px 0;text-align:right;">
+          <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-style:italic;color:#706B69;margin:0 0 6px;">${note}</p>
+          <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${primary};margin:0;"><a href="${linkHref}" style="color:${primary};text-decoration:underline;">${linkText}</a></p>
+        </td></tr>
       </table>`;
     }
 

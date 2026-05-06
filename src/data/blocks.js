@@ -18,6 +18,7 @@ export const BLOCK_LIBRARY = [
   { kind: 'button',    label: L('Button / CTA', 'ปุ่มกระทำ'),            group: 'elements' },
   { kind: 'divider',   label: L('Divider', 'เส้นคั่น'),                  group: 'elements' },
   { kind: 'spacer',    label: L('Spacer', 'ระยะห่าง'),                   group: 'elements' },
+  { kind: 'notice',    label: L('Notice', 'ประกาศ'),                     group: 'elements' },
   { kind: 'quote',     label: L('Pull Quote', 'คำพูดอ้างอิง'),           group: 'elements' },
   { kind: 'footer',    label: L('Footer', 'ส่วนท้าย'),                   group: 'essentials' },
 ];
@@ -85,6 +86,11 @@ export const DEFAULT_PROPS = {
   button: { label: 'Read more', href: 'https://roche.com', align: 'center' },
   divider: {},
   spacer: { height: 32 },
+  notice: {
+    note: 'For internal distribution only — sent to all Roche Diagnostics employees',
+    linkText: 'Learn how to read this message in your preferred language',
+    linkHref: 'https://roche.com',
+  },
   quote: {
     text: 'Our pipeline continues to advance in areas where patients face significant unmet need.',
     attrib: 'Thomas Schinecker, CEO', width: 100,
@@ -229,6 +235,11 @@ export const FIELDS = {
   divider: [],
   spacer: [
     ['height', L('Height', 'ความสูง'), 'slider', { min: 8, max: 200, step: 4, suffix: 'px' }],
+  ],
+  notice: [
+    ['note', L('Disclaimer', 'ข้อความแจ้ง'), 'text'],
+    ['linkText', L('Link text', 'ข้อความลิงก์'), 'text'],
+    ['linkHref', L('Link URL', 'ลิงก์'), 'url'],
   ],
   quote: [
     ['text', L('Quote', 'ข้อความ'), 'textarea'],

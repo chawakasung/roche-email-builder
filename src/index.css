@@ -97,7 +97,7 @@ button { font-family: inherit; }
 .block.is-selected [contenteditable="true"]:hover, .block.is-selected [contenteditable="true"]:focus { background: rgba(11,65,205,.06); box-shadow: inset 0 0 0 1px rgba(11,65,205,.3); }
 
 /* ===== EMAIL BLOCK STYLES ===== */
-.e-banner { display: block; padding: 0; margin-bottom: 72px; }
+.e-banner { display: block; padding: 0; margin-bottom: 0; }
 .e-banner__scaler { width: 100%; overflow: hidden; position: relative; }
 .e-banner__wrap { position: relative; width: 750px !important; min-width: 750px; max-width: 750px; height: 205px !important; min-height: 205px; max-height: 205px; display: flex; overflow: hidden; flex-shrink: 0; box-sizing: border-box; }
 .e-banner__logo { position: absolute; top: 20px; left: 20px; z-index: 5; pointer-events: none; }
@@ -198,6 +198,9 @@ button { font-family: inherit; }
 .e-button { display: inline-block; padding: 12px 26px; background: var(--roche-blue); color: #fff; text-decoration: none; font-size: 13px; font-weight: 500; }
 .e-divider-wrap { padding: 16px 32px; }
 .e-divider { height: 1px; background: var(--hairline); }
+.e-notice { padding: 8px 32px 0; text-align: right; }
+.e-notice__note { font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-style: italic; color: var(--fg-2); margin: 0 0 6px; }
+.e-notice__link { font-family: Arial, Helvetica, sans-serif; font-size: 13px; text-decoration: underline; }
 .e-spacer { width: 100%; position: relative; background: repeating-linear-gradient(45deg, transparent 0 6px, rgba(11,65,205,.06) 6px 12px); display: flex; align-items: center; justify-content: center; }
 .block:not(.is-selected):not(:hover) .e-spacer { background: transparent; }
 .e-spacer__lbl { font-size: 10px; color: var(--fg-3); letter-spacing: .04em; padding: 1px 6px; background: rgba(255,255,255,.85); border-radius: 2px; opacity: 0; transition: opacity .15s; }

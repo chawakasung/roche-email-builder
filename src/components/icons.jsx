@@ -11,6 +11,7 @@ export const ICONS = {
   button: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="4" y="9" width="16" height="6" rx="3"/></svg>,
   divider: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><line x1="3" y1="12" x2="21" y2="12"/></svg>,
   spacer: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/><polyline points="9 9 12 6 15 9"/><polyline points="9 15 12 18 15 15"/><line x1="12" y1="6" x2="12" y2="18" strokeDasharray="2 2"/></svg>,
+  notice: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><line x1="9" y1="8" x2="20" y2="8"/><line x1="6" y1="13" x2="20" y2="13"/><line x1="11" y1="17" x2="20" y2="17" stroke="currentColor"/></svg>,
   quote: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9c0-1 1-2 2-2h2v6H7c-.5 0-1-.5-1-1z"/><path d="M14 9c0-1 1-2 2-2h2v6h-3c-.5 0-1-.5-1-1z"/><path d="M7 13l-2 4M15 13l-2 4"/></svg>,
   video: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="14" rx="1"/><polygon points="10 9 15 12 10 15" fill="currentColor"/></svg>,
   podcast: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="21"/><line x1="9" y1="21" x2="15" y2="21"/></svg>,
@@ -44,5 +45,5 @@ export const BLOCK_ICONS = {
   image: ICONS.image, gallery: ICONS.gallery, video: ICONS.video, podcast: ICONS.podcast,
   language: ICONS.language, twocol: ICONS.twocol, threecol: ICONS.threecol,
   storylist: ICONS.storylist, button: ICONS.button, divider: ICONS.divider,
-  spacer: ICONS.spacer, quote: ICONS.quote, mediaform: ICONS.mediaform, footer: ICONS.footer,
+  spacer: ICONS.spacer, notice: ICONS.notice, quote: ICONS.quote, mediaform: ICONS.mediaform, footer: ICONS.footer,
 };
