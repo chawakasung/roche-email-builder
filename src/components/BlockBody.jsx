@@ -109,21 +109,21 @@ export function BlockBody({ kind, props, brand, editing, onEdit, onCloseLetter }
         </div>
         <div className="e-webinar__body">
           <h1 className="e-webinar__title" {...ce('title')}>{props.title}</h1>
-          <p className="e-webinar__desc" {...ce('description')}>{props.description}</p>
           <div className="e-webinar__speaker">
             <div className="e-webinar__speaker-img">
               <EditableImage src={props.speakerImg} editing={editing} onReplace={v => onEdit('speakerImg', v)} widthPct={100} heightPx={160} defaultHeight={160} allowResize={false} />
             </div>
             <div className="e-webinar__speaker-info">
+              <p className="e-webinar__desc" {...ce('description')}>{props.description}</p>
               <h3 className="e-webinar__speaker-name" {...ce('speakerName')}>{props.speakerName}</h3>
               <p className="e-webinar__speaker-credentials" {...ce('speakerInfo')}>{props.speakerInfo}</p>
+              <div className="e-webinar__when">
+                <p className="e-webinar__date" style={{ color: brand.primary }} {...ce('date')}>{props.date}</p>
+                <p className="e-webinar__time" style={{ color: brand.primary }} {...ce('time')}>{props.time}</p>
+              </div>
+              <p className="e-webinar__disclaimer" {...ce('disclaimer')}>{props.disclaimer}</p>
             </div>
           </div>
-          <div className="e-webinar__when">
-            <p className="e-webinar__date" style={{ color: brand.primary }} {...ce('date')}>{props.date}</p>
-            <p className="e-webinar__time" style={{ color: brand.primary }} {...ce('time')}>{props.time}</p>
-          </div>
-          <p className="e-webinar__disclaimer" {...ce('disclaimer')}>{props.disclaimer}</p>
           <div className="e-webinar__cta-wrap">
             <a className="e-webinar__cta" style={{ background: brand.primary }} href={props.ctaHref || '#'} {...ce('ctaLabel')}>{props.ctaLabel}</a>
           </div>
