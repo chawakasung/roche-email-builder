@@ -221,7 +221,7 @@ button { font-family: inherit; }
 .e-webinar__date { font-family: var(--font-roche); font-weight: 700; font-size: 18px; line-height: 1.3; margin: 0 0 4px; }
 .e-webinar__time { font-family: var(--font-roche); font-weight: 400; font-size: 18px; line-height: 1.3; margin: 0; }
 .e-webinar__disclaimer { font-family: var(--font-roche); font-weight: 400; font-size: 13px; line-height: 1.5; color: var(--fg-2); margin: 0; }
-.e-webinar__cta-wrap { text-align: center; margin-top: 24px; }
+.e-webinar__cta-wrap { text-align: center; margin-top: 32px; }
 .e-webinar__cta { display: inline-block; padding: 16px 96px; font-family: var(--font-roche); font-size: 16px; font-weight: 400; color: #fff; text-decoration: none; }
 /* Mobile preview (canvas in 380px shell): stack row, center everything */
 .device-shell.mobile .e-webinar__row { grid-template-columns: 1fr; justify-items: center; gap: 16px; text-align: center; }

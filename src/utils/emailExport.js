@@ -264,18 +264,17 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
                 <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:14px;line-height:1.5;color:#544F4F;margin:0 0 28px;">${speakerInfo}</p>
                 <p style="font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:18px;line-height:1.3;color:${primary};margin:0 0 4px;">${date}</p>
                 <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:18px;line-height:1.3;color:${primary};margin:0 0 16px;">${time}</p>
-                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:13px;line-height:1.5;color:#706B69;margin:0;">${disclaimer}</p>
+                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:13px;line-height:1.5;color:#706B69;margin:0 0 32px;">${disclaimer}</p>
+                <table role="presentation" class="webinar-cta-table" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
+                  <tr><td bgcolor="${primary}" style="background-color:${primary};">
+                    <a href="${ctaHref}" style="display:inline-block;padding:16px 80px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:400;color:#ffffff;text-decoration:none;background-color:${primary};">${ctaLabel}</a>
+                  </td></tr>
+                </table>
               </td>
             </tr>
           </table>
         </td></tr>
-        <tr><td align="center" style="padding:32px 40px 40px;text-align:center;">
-          <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto;">
-            <tr><td bgcolor="${primary}" style="background-color:${primary};">
-              <a href="${ctaHref}" style="display:inline-block;padding:16px 96px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:400;color:#ffffff;text-decoration:none;background-color:${primary};">${ctaLabel}</a>
-            </td></tr>
-          </table>
-        </td></tr>
+        <tr><td style="padding:0 0 40px;font-size:0;line-height:0;">&nbsp;</td></tr>
       </table>`;
     }
 
