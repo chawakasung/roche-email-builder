@@ -411,3 +411,26 @@ input[type=file] { display: none; }
 .test-popup__ring { width: 44px; height: 44px; border-radius: 50%; border: 3px solid var(--grey-4); border-top-color: var(--roche-blue); animation: spin .9s linear infinite; margin: 0 auto 16px; }
 .test-popup__check { width: 56px; height: 56px; margin: 0 auto 14px; display: block; stroke: var(--cobas-green); fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 .test-popup__error { width: 56px; height: 56px; margin: 0 auto 14px; display: block; stroke: var(--red-dark); fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.test-popup--standalone { padding: 24px 24px 22px; max-width: 420px; text-align: left; }
+.test-popup--standalone h3 { text-align: left; }
+.test-popup--standalone .test-popup__sub { text-align: left; }
+.test-popup__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.test-popup__head h3 { margin: 0; }
+.test-popup__head .close { background: transparent; border: 0; font-size: 22px; line-height: 1; color: var(--fg-3); cursor: pointer; padding: 4px 8px; }
+.test-popup__head .close:hover { color: var(--fg-1); }
+.test-popup__row { display: flex; gap: 8px; }
+.test-popup__row input { flex: 1; border: 1px solid var(--hairline); padding: 9px 11px; font-size: 13px; border-radius: 2px; outline: none; }
+.test-popup__row input:focus { border-color: var(--roche-blue); }
+.test-popup__row .btn { padding: 9px 14px; }
+.test-popup--standalone .test-popup__check,
+.test-popup--standalone .test-popup__error,
+.test-popup--standalone .test-popup__ring { margin-left: auto; margin-right: auto; }
+.test-popup--standalone .test-popup--standalone-result h3,
+.test-popup__actions ~ h3 { text-align: center; }
+.test-popup__actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px; }
+.test-popup--standalone:has(.test-popup__check) h3,
+.test-popup--standalone:has(.test-popup__error) h3,
+.test-popup--standalone:has(.test-popup__ring) h3 { text-align: center; }
+.test-popup--standalone:has(.test-popup__check) .test-popup__sub,
+.test-popup--standalone:has(.test-popup__error) .test-popup__sub,
+.test-popup--standalone:has(.test-popup__ring) .test-popup__sub { text-align: center; }

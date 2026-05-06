@@ -3,7 +3,7 @@ import { newBlock, blockLabel } from './data/blocks.js';
 import { BlockLibrary, RightPanel } from './components/Panels.jsx';
 import { Canvas } from './components/Canvas.jsx';
 import { PreviewModal } from './components/PreviewModal.jsx';
-import { SendModal } from './components/SendModal.jsx';
+import { TestSendModal } from './components/TestSendModal.jsx';
 import { TOPBAR_ICONS as I } from './components/icons.jsx';
 import { downloadEmailHTML } from './utils/emailExport.js';
 import { Lbl } from './components/Panels.jsx';
@@ -117,8 +117,8 @@ function App() {
         <button className="btn" onClick={handleDownload}>
           {I.download} HTML
         </button>
-        <button className="btn primary" onClick={() => setMode('send-modal')}>
-          {I.send} <Lbl en="Send" th="ส่งอีเมล" lang={lang} />
+        <button className="btn primary" onClick={() => setMode('test-modal')}>
+          {I.send} <Lbl en="Send test" th="ส่งทดสอบ" lang={lang} />
         </button>
       </div>
 
@@ -157,7 +157,7 @@ function App() {
       />
 
       {mode === 'preview-modal' && <PreviewModal blocks={blocks} settings={settings} onClose={() => setMode('edit')} lang={lang} />}
-      {mode === 'send-modal' && <SendModal blocks={blocks} settings={settings} onClose={() => setMode('edit')} lang={lang} onToast={flash} />}
+      {mode === 'test-modal' && <TestSendModal blocks={blocks} settings={settings} onClose={() => setMode('edit')} lang={lang} />}
 
       {toast && <div className="toast">{I.check}{toast}</div>}
     </div>
