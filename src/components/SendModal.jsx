@@ -124,19 +124,22 @@ export function SendModal({ blocks, settings, onClose, lang, onToast }) {
       onToast((lang === 'th' ? 'ส่งล้มเหลว: ' : 'Send failed: ') + e.message);
     }
   }
+  const [testStatus, setTestStatus] = useState(null);
+
   async function sendTest() {
     if (!isValidEmail(testEmail)) { onToast(lang === 'th' ? 'อีเมลไม่ถูกต้อง' : 'Enter a valid email'); return; }
+    setTestStatus({ kind: 'sending', email: testEmail });
     try {
       const target = { email: testEmail, first_name: 'Test', last_name: 'User', department: 'Test' };
       const data = await callSendAPI([target], true);
       const failure = data.results?.find(x => !x.ok);
       if (failure) {
-        onToast((lang === 'th' ? 'ส่งทดสอบล้มเหลว: ' : 'Test failed: ') + failure.error);
+        setTestStatus({ kind: 'error', email: testEmail, error: failure.error });
       } else {
-        onToast((lang === 'th' ? 'ส่งอีเมลทดสอบไปที่ ' : 'Test email sent to ') + testEmail);
+        setTestStatus({ kind: 'success', email: testEmail });
       }
     } catch (e) {
-      onToast((lang === 'th' ? 'ส่งทดสอบล้มเหลว: ' : 'Test failed: ') + e.message);
+      setTestStatus({ kind: 'error', email: testEmail, error: e.message });
     }
   }
 
@@ -333,6 +336,33 @@ export function SendModal({ blocks, settings, onClose, lang, onToast }) {
           ) : <span />}
         </div>
       </div>
+      {testStatus && (
+        <div className="modal-bg test-popup-bg" onClick={() => testStatus.kind !== 'sending' && setTestStatus(null)}>
+          <div className="test-popup" onClick={(e) => e.stopPropagation()}>
+            {testStatus.kind === 'sending' ? (
+              <>
+                <div className="test-popup__ring" />
+                <h3>{lang === 'th' ? 'กำลังส่งอีเมลทดสอบ…' : 'Sending test email…'}</h3>
+                <p className="test-popup__sub">{testStatus.email}</p>
+              </>
+            ) : testStatus.kind === 'success' ? (
+              <>
+                <svg className="test-popup__check" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" /><polyline points="14 27 23 36 38 19" /></svg>
+                <h3>{lang === 'th' ? 'ส่งอีเมลทดสอบสำเร็จ' : 'Test email sent'}</h3>
+                <p className="test-popup__sub">{lang === 'th' ? 'ส่งไปที่ ' : 'Delivered to '}<b>{testStatus.email}</b></p>
+                <button className="btn primary" style={{ marginTop: 18, minWidth: 120, justifyContent: 'center' }} onClick={() => setTestStatus(null)}>OK</button>
+              </>
+            ) : (
+              <>
+                <svg className="test-popup__error" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" /><line x1="18" y1="18" x2="34" y2="34" /><line x1="34" y1="18" x2="18" y2="34" /></svg>
+                <h3>{lang === 'th' ? 'ส่งทดสอบล้มเหลว' : 'Test failed'}</h3>
+                <p className="test-popup__sub">{testStatus.error}</p>
+                <button className="btn primary" style={{ marginTop: 18, minWidth: 120, justifyContent: 'center' }} onClick={() => setTestStatus(null)}>{lang === 'th' ? 'ปิด' : 'Close'}</button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
