@@ -122,10 +122,10 @@ export function BlockBody({ kind, props, brand, editing, onEdit, onCloseLetter }
                 <p className="e-webinar__time" style={{ color: brand.primary }} {...ce('time')}>{props.time}</p>
               </div>
               <p className="e-webinar__disclaimer" {...ce('disclaimer')}>{props.disclaimer}</p>
+              <div className="e-webinar__cta-wrap">
+                <a className="e-webinar__cta" style={{ background: brand.primary }} href={props.ctaHref || '#'} {...ce('ctaLabel')}>{props.ctaLabel}</a>
+              </div>
             </div>
-          </div>
-          <div className="e-webinar__cta-wrap">
-            <a className="e-webinar__cta" style={{ background: brand.primary }} href={props.ctaHref || '#'} {...ce('ctaLabel')}>{props.ctaLabel}</a>
           </div>
         </div>
       </div>

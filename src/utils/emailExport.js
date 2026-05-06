@@ -269,18 +269,17 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
                 <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:14px;line-height:1.5;color:#544F4F;margin:0 0 24px;">${speakerInfo}</p>
                 <p style="font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:18px;line-height:1.3;color:${primary};margin:0 0 4px;">${date}</p>
                 <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:18px;line-height:1.3;color:${primary};margin:0 0 16px;">${time}</p>
-                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:13px;line-height:1.5;color:#706B69;margin:0;">${disclaimer}</p>
+                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:13px;line-height:1.5;color:#706B69;margin:0 0 24px;">${disclaimer}</p>
+                <table role="presentation" class="webinar-cta-table" border="0" cellpadding="0" cellspacing="0" style="margin:0;">
+                  <tr><td bgcolor="${primary}" style="background-color:${primary};">
+                    <a href="${ctaHref}" style="display:inline-block;padding:16px 64px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:400;color:#ffffff;text-decoration:none;background-color:${primary};">${ctaLabel}</a>
+                  </td></tr>
+                </table>
               </td>
             </tr>
           </table>
         </td></tr>
-        <tr><td align="center" style="padding:32px 40px 40px;text-align:center;">
-          <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto;">
-            <tr><td bgcolor="${primary}" style="background-color:${primary};">
-              <a href="${ctaHref}" style="display:inline-block;padding:16px 96px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:400;color:#ffffff;text-decoration:none;background-color:${primary};">${ctaLabel}</a>
-            </td></tr>
-          </table>
-        </td></tr>
+        <tr><td style="padding:0 0 40px;font-size:0;line-height:0;">&nbsp;</td></tr>
       </table>`;
     }
 
@@ -419,6 +418,7 @@ export function generateEmailHTML(blocks, settings) {
     .webinar-text-col { text-align: center !important; padding: 0 !important; margin: 0 !important; }
     .webinar-mobile-desc { display: table-row !important; mso-hide: all; }
     .webinar-desktop-desc { display: none !important; }
+    .webinar-cta-table { margin: 0 auto !important; }
     /* Banner: stack cells vertically and scale image to width */
     .banner-table, .banner-table tr, .banner-table tbody { display: block !important; width: 100% !important; }
     .banner-cell { display: block !important; width: 100% !important; height: auto !important; box-sizing: border-box !important; }
