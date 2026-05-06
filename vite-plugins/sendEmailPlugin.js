@@ -1,10 +1,54 @@
 // Vite middleware that exposes POST /api/send
 // Calls Resend with the per-recipient resolved HTML.
 
+import sharp from 'sharp';
 import { generateEmailHTML } from '../src/utils/emailExport.js';
 import { resolveBlocks, resolveMerge } from '../src/utils/merge.js';
 
 const RESEND_URL = 'https://api.resend.com/emails';
+
+// Map drag-to-reposition imgX/imgY percentages onto sharp's named positions.
+function imgPosToSharp(x, y) {
+  const xName = x < 33 ? 'left' : x > 67 ? 'right' : 'center';
+  const yName = y < 33 ? 'top' : y > 67 ? 'bottom' : 'center';
+  if (xName === 'center' && yName === 'center') return 'center';
+  if (xName === 'center') return yName;
+  if (yName === 'center') return xName;
+  return `${yName} ${xName}`;
+}
+
+// Resize a base64 data URL to a specific size with cover fit.
+// Email clients (especially Gmail) often refuse to honor explicit
+// width/height + object-fit on <img> tags, leaving gray bars when the
+// natural aspect doesn't match. Pre-cropping makes the image fit
+// deterministically in every client.
+async function cropImage(dataUrl, w, h, position) {
+  const m = /^data:image\/[a-z+]+;base64,(.+)$/i.exec(dataUrl);
+  if (!m) return dataUrl;
+  const buf = Buffer.from(m[1], 'base64');
+  try {
+    const out = await sharp(buf)
+      .resize(w, h, { fit: 'cover', position })
+      .jpeg({ quality: 85 })
+      .toBuffer();
+    return `data:image/jpeg;base64,${out.toString('base64')}`;
+  } catch (e) {
+    console.warn('Image crop failed:', e.message);
+    return dataUrl;
+  }
+}
+
+async function preprocessBlocks(blocks) {
+  return Promise.all(blocks.map(async (b) => {
+    if (b.kind === 'header' && b.props?.img) {
+      const x = b.props.imgX != null ? b.props.imgX : 50;
+      const y = b.props.imgY != null ? b.props.imgY : 50;
+      const cropped = await cropImage(b.props.img, 340, 205, imgPosToSharp(x, y));
+      return { ...b, props: { ...b.props, img: cropped } };
+    }
+    return b;
+  }));
+}
 
 // 30 MB — generous to allow several base64 image uploads in one email
 const MAX_PAYLOAD = 30_000_000;
@@ -95,9 +139,14 @@ export function sendEmailPlugin() {
           ? `${settings.fromName} <${settings.fromEmail}>`
           : settings.fromEmail;
 
+        // Pre-crop banner images once (same crop for every recipient).
+        let processedBlocks;
+        try { processedBlocks = await preprocessBlocks(blocks); }
+        catch (e) { return send(res, 500, { error: 'image processing failed: ' + e.message }); }
+
         const results = [];
         for (const r of recipients) {
-          const personalizedBlocks = resolveBlocks(blocks, r);
+          const personalizedBlocks = resolveBlocks(processedBlocks, r);
           const html = generateEmailHTML(personalizedBlocks, settings);
           const subject = resolveMerge(settings.subject, r);
           try {
