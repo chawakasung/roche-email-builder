@@ -249,7 +249,11 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
       const disclaimer = esc(props.disclaimer || '');
       const ctaLabel = esc(props.ctaLabel || 'Register');
       const ctaHref = esc(props.ctaHref || '#');
-      return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="background-color:#ffffff;">
+      const bodyBg = esc(props.bodyBg || '#FFFFFF');
+      const bodyDark = ['#0B41CD', '#0066CC', '#003366', '#1a1a1a', '#000000'].includes(bodyBg.toUpperCase());
+      const textColor = bodyDark ? '#ffffff' : '#544F4F';
+      const dimColor = bodyDark ? '#cfd8e8' : '#706B69';
+      return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0" bgcolor="${bodyBg}" style="background-color:${bodyBg};">
         ${bannerImg ? `<tr><td bgcolor="#0B2154" style="background-color:#0B2154;padding:0;font-size:0;line-height:0;"><img src="${bannerImg}" width="750" height="${bannerH}" alt="" style="display:block;width:100%;max-width:750px;height:${bannerH}px;object-fit:cover;" /></td></tr>` : ''}
         <tr><td style="padding:40px 40px 0;">
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -258,13 +262,13 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
                 ${speakerImg ? `<img class="webinar-speaker-img" src="${speakerImg}" width="${speakerSize}" height="${speakerSize}" alt="${speakerName}" style="display:block;width:${speakerSize}px;height:${speakerSize}px;border-radius:${Math.round(speakerSize/2)}px;object-fit:cover;background-color:#DBD6D1;" />` : `<div style="width:${speakerSize}px;height:${speakerSize}px;border-radius:${Math.round(speakerSize/2)}px;background-color:#DBD6D1;">&nbsp;</div>`}
               </td>
               <td class="stack-column webinar-content-col" valign="top" style="vertical-align:top;">
-                <h1 style="font-family:Arial,Helvetica,sans-serif;font-weight:300;font-size:32px;line-height:1.15;letter-spacing:-0.01em;color:#544F4F;margin:0 0 24px;">${title}</h1>
-                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:15px;line-height:1.55;color:#544F4F;margin:0 0 24px;">${description}</p>
-                <h3 style="font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:15px;line-height:1.4;color:#544F4F;margin:0 0 6px;">${speakerName}</h3>
-                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:14px;line-height:1.5;color:#544F4F;margin:0 0 28px;">${speakerInfo}</p>
+                <h1 style="font-family:Arial,Helvetica,sans-serif;font-weight:300;font-size:32px;line-height:1.15;letter-spacing:-0.01em;color:${textColor};margin:0 0 24px;">${title}</h1>
+                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:15px;line-height:1.55;color:${textColor};margin:0 0 24px;">${description}</p>
+                <h3 style="font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:15px;line-height:1.4;color:${textColor};margin:0 0 6px;">${speakerName}</h3>
+                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:14px;line-height:1.5;color:${textColor};margin:0 0 28px;">${speakerInfo}</p>
                 <p style="font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:18px;line-height:1.3;color:${primary};margin:0 0 4px;">${date}</p>
                 <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:18px;line-height:1.3;color:${primary};margin:0 0 16px;">${time}</p>
-                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:13px;line-height:1.5;color:#706B69;margin:0 0 32px;">${disclaimer}</p>
+                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:13px;line-height:1.5;color:${dimColor};margin:0 0 32px;">${disclaimer}</p>
                 <table role="presentation" class="webinar-cta-table" border="0" cellpadding="0" cellspacing="0" style="margin:0;">
                   <tr><td bgcolor="${primary}" style="background-color:${primary};">
                     <a href="${ctaHref}" style="display:inline-block;padding:16px 80px;font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:400;color:#ffffff;text-decoration:none;background-color:${primary};">${ctaLabel}</a>

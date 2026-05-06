@@ -95,6 +95,7 @@ export const DEFAULT_PROPS = {
   webinar: {
     bannerImg: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80',
     bannerH: 280,
+    bodyBg: '#FFFFFF',
     title: 'World TB Day 2026: Connecting Clinical Innovation and the Patient Journey',
     description: 'Tuberculosis (TB) remains one of the world\'s deadliest infectious threats, claiming over 1.2 million lives annually. While the pace of innovation has been increasing, significant gaps in the care cascade persist. As we commemorate World TB Day 2026, we invite you to join us for a comprehensive one-hour webinar connecting high-level clinical research with patient advocacy.',
     speakerImg: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&q=80',
@@ -260,6 +261,16 @@ export const FIELDS = {
   webinar: [
     ['bannerImg', L('Banner image', 'รูปแบนเนอร์'), 'image'],
     ['bannerH', L('Banner height', 'ความสูงแบนเนอร์'), 'slider', { min: 160, max: 480, step: 20, suffix: 'px' }],
+    ['bodyBg', L('Body background', 'สีพื้นหลัง'), 'swatches', [
+      { value: '#FFFFFF', label: 'White' },
+      { value: '#FFF7F5', label: 'Roche cream' },
+      { value: '#F4EDE7', label: 'Sand' },
+      { value: '#EAF1FF', label: 'Sky' },
+      { value: '#E8F5EE', label: 'Mint' },
+      { value: '#FFF3E0', label: 'Peach' },
+      { value: '#F5F5F2', label: 'Stone' },
+      { value: '#0B41CD', label: 'Roche blue' },
+    ]],
     ['title', L('Title', 'หัวข้อ'), 'textarea'],
     ['description', L('Description', 'คำอธิบาย'), 'textarea'],
     ['speakerImg', L('Speaker photo', 'รูปวิทยากร'), 'image'],

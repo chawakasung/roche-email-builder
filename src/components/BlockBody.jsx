@@ -147,12 +147,14 @@ export function BlockBody({ kind, props, brand, editing, onEdit, onCloseLetter }
         };
         inp.click();
       };
+      const bodyBg = props.bodyBg || '#FFFFFF';
+      const bodyDark = ['#0B41CD', '#0066CC', '#003366', '#1a1a1a', '#000000'].includes(bodyBg);
       return (
-        <div className="e-webinar">
+        <div className="e-webinar" style={{ background: bodyBg, color: bodyDark ? '#ffffff' : undefined }}>
           <div className="e-webinar__banner" style={{ height: (Number(props.bannerH) || 280) + 'px' }}>
             <EditableImage src={props.bannerImg} editing={editing} onReplace={v => onEdit('bannerImg', v)} widthPct={100} heightPx={Number(props.bannerH) || 280} onResize={(_w, h) => onEdit('bannerH', h)} defaultHeight={280} allowResize={true} />
           </div>
-          <div className="e-webinar__body">
+          <div className="e-webinar__body" style={{ background: bodyBg }}>
             <div className="e-webinar__row">
               <div className="e-webinar__photo" style={{ width: speakerSize + 'px', height: speakerSize + 'px' }}>
                 {props.speakerImg ? (
