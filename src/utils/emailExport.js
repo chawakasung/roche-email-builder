@@ -254,22 +254,20 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
         <tr><td style="padding:40px 40px 0;">
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
-              <td class="stack-column webinar-img-col" width="${speakerColW}" valign="middle" style="vertical-align:middle;padding:0 32px 0 0;">
+              <td class="stack-column webinar-img-col" width="${speakerColW}" valign="top" style="vertical-align:top;padding:0 32px 0 0;">
                 ${speakerImg ? `<img class="webinar-speaker-img" src="${speakerImg}" width="${speakerSize}" height="${speakerSize}" alt="${speakerName}" style="display:block;width:${speakerSize}px;height:${speakerSize}px;border-radius:${Math.round(speakerSize/2)}px;object-fit:cover;background-color:#DBD6D1;" />` : `<div style="width:${speakerSize}px;height:${speakerSize}px;border-radius:${Math.round(speakerSize/2)}px;background-color:#DBD6D1;">&nbsp;</div>`}
               </td>
-              <td class="stack-column webinar-title-col" valign="middle" style="vertical-align:middle;">
-                <h1 style="font-family:Arial,Helvetica,sans-serif;font-weight:300;font-size:32px;line-height:1.15;letter-spacing:-0.01em;color:#544F4F;margin:0;">${title}</h1>
+              <td class="stack-column webinar-content-col" valign="top" style="vertical-align:top;">
+                <h1 style="font-family:Arial,Helvetica,sans-serif;font-weight:300;font-size:32px;line-height:1.15;letter-spacing:-0.01em;color:#544F4F;margin:0 0 24px;">${title}</h1>
+                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:15px;line-height:1.55;color:#544F4F;margin:0 0 24px;">${description}</p>
+                <h3 style="font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:15px;line-height:1.4;color:#544F4F;margin:0 0 6px;">${speakerName}</h3>
+                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:14px;line-height:1.5;color:#544F4F;margin:0 0 28px;">${speakerInfo}</p>
+                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:18px;line-height:1.3;color:${primary};margin:0 0 4px;">${date}</p>
+                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:18px;line-height:1.3;color:${primary};margin:0 0 16px;">${time}</p>
+                <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:13px;line-height:1.5;color:#706B69;margin:0;">${disclaimer}</p>
               </td>
             </tr>
           </table>
-        </td></tr>
-        <tr><td style="padding:28px 40px 0;">
-          <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:15px;line-height:1.55;color:#544F4F;margin:0 0 24px;">${description}</p>
-          <h3 style="font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:15px;line-height:1.4;color:#544F4F;margin:0 0 6px;">${speakerName}</h3>
-          <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:14px;line-height:1.5;color:#544F4F;margin:0 0 28px;">${speakerInfo}</p>
-          <p style="font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:18px;line-height:1.3;color:${primary};margin:0 0 4px;">${date}</p>
-          <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:18px;line-height:1.3;color:${primary};margin:0 0 16px;">${time}</p>
-          <p style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:13px;line-height:1.5;color:#706B69;margin:0;">${disclaimer}</p>
         </td></tr>
         <tr><td align="center" style="padding:32px 40px 40px;text-align:center;">
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto;">
@@ -411,9 +409,9 @@ export function generateEmailHTML(blocks, settings) {
     .col-img { width: 100% !important; height: 220px !important; max-height: 220px !important; object-fit: cover !important; margin-bottom: 10px !important; }
     /* Webinar speaker photo stays circular even when its column stacks */
     .webinar-speaker-img { width: 140px !important; height: 140px !important; max-width: 140px !important; max-height: 140px !important; border-radius: 70px !important; margin: 0 auto 16px !important; }
-    /* Webinar: photo + title stack and center on mobile */
-    .webinar-img-col { padding: 0 0 8px !important; text-align: center !important; }
-    .webinar-title-col { text-align: center !important; padding: 0 !important; }
+    /* Webinar: photo + content stack and center on mobile */
+    .webinar-img-col { padding: 0 0 16px !important; text-align: center !important; }
+    .webinar-content-col { text-align: center !important; padding: 0 !important; }
     /* Banner: stack cells vertically and scale image to width */
     .banner-table, .banner-table tr, .banner-table tbody { display: block !important; width: 100% !important; }
     .banner-cell { display: block !important; width: 100% !important; height: auto !important; box-sizing: border-box !important; }

@@ -153,7 +153,7 @@ export function BlockBody({ kind, props, brand, editing, onEdit, onCloseLetter }
             <EditableImage src={props.bannerImg} editing={editing} onReplace={v => onEdit('bannerImg', v)} widthPct={100} heightPx={Number(props.bannerH) || 280} onResize={(_w, h) => onEdit('bannerH', h)} defaultHeight={280} allowResize={true} />
           </div>
           <div className="e-webinar__body">
-            <div className="e-webinar__head">
+            <div className="e-webinar__row">
               <div className="e-webinar__photo" style={{ width: speakerSize + 'px', height: speakerSize + 'px' }}>
                 {props.speakerImg ? (
                   <img src={props.speakerImg} alt={props.speakerName || ''} onClick={onSpeakerPick} />
@@ -171,16 +171,18 @@ export function BlockBody({ kind, props, brand, editing, onEdit, onCloseLetter }
                   </div>
                 )}
               </div>
-              <h1 className="e-webinar__title" {...ce('title')}>{props.title}</h1>
+              <div className="e-webinar__content">
+                <h1 className="e-webinar__title" {...ce('title')}>{props.title}</h1>
+                <p className="e-webinar__desc" {...ce('description')}>{props.description}</p>
+                <h3 className="e-webinar__speaker-name" {...ce('speakerName')}>{props.speakerName}</h3>
+                <p className="e-webinar__speaker-credentials" {...ce('speakerInfo')}>{props.speakerInfo}</p>
+                <div className="e-webinar__when">
+                  <p className="e-webinar__date" style={{ color: brand.primary }} {...ce('date')}>{props.date}</p>
+                  <p className="e-webinar__time" style={{ color: brand.primary }} {...ce('time')}>{props.time}</p>
+                </div>
+                <p className="e-webinar__disclaimer" {...ce('disclaimer')}>{props.disclaimer}</p>
+              </div>
             </div>
-            <p className="e-webinar__desc" {...ce('description')}>{props.description}</p>
-            <h3 className="e-webinar__speaker-name" {...ce('speakerName')}>{props.speakerName}</h3>
-            <p className="e-webinar__speaker-credentials" {...ce('speakerInfo')}>{props.speakerInfo}</p>
-            <div className="e-webinar__when">
-              <p className="e-webinar__date" style={{ color: brand.primary }} {...ce('date')}>{props.date}</p>
-              <p className="e-webinar__time" style={{ color: brand.primary }} {...ce('time')}>{props.time}</p>
-            </div>
-            <p className="e-webinar__disclaimer" {...ce('disclaimer')}>{props.disclaimer}</p>
             <div className="e-webinar__cta-wrap">
               <a className="e-webinar__cta" style={{ background: brand.primary }} href={props.ctaHref || '#'} {...ce('ctaLabel')}>{props.ctaLabel}</a>
             </div>
