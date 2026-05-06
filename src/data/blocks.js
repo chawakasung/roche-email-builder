@@ -33,7 +33,7 @@ export const DEFAULT_PROPS = {
   header: {
     img: '', alt: 'Email banner', href: '',
     headline: 'A passion for impossible discovery',
-    fontSize: 38, bgColor: '#FFF7F5', flipped: false, showLogo: true,
+    fontSize: 48, bgColor: '#FFF7F5', flipped: false, showLogo: true,
     imgX: 50, imgY: 50,
   },
   hero: {
@@ -119,7 +119,7 @@ export const DEFAULT_PROPS = {
 export const FIELDS = {
   header: [
     ['headline', L('Headline', 'หัวข้อ'), 'text'],
-    ['fontSize', L('Font size', 'ขนาดตัวอักษร'), 'slider', { min: 14, max: 40, step: 1, suffix: 'px' }],
+    ['fontSize', L('Font size', 'ขนาดตัวอักษร'), 'slider', { min: 14, max: 64, step: 1, suffix: 'px' }],
     ['bgColor', L('Background', 'สีพื้นหลัง'), 'swatches', [
       { value: '#FFF7F5', label: 'Soft pink' },
       { value: '#DBD6D1', label: 'Stone' },
