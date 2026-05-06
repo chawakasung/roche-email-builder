@@ -4,17 +4,32 @@ import { Lbl } from './Panels.jsx';
 import { TOPBAR_ICONS as I } from './icons.jsx';
 import { SAMPLE_CSV, parseCSV, isValidEmail } from '../utils/csvParser.js';
 
-// For each banner ('header') block, screenshot the live canvas DOM at its native
-// 750x205 size and stash the PNG data URL on the block. The server then renders
-// that PNG as a single full-width image instead of a split HTML/CSS layout —
-// which reliably handles mobile scaling and avoids per-client rendering quirks.
+// For each banner ('header') block, render it to a 750x205 PNG by cloning the
+// live banner element off-screen at its native size (without the canvas's
+// fit-to-viewport CSS transform) and screenshotting the clone with html2canvas.
+// The server then embeds that PNG as one full-width image — bulletproof across
+// every email client and naturally responsive on mobile.
 async function rasteriseBanners(blocks) {
   return Promise.all(blocks.map(async (b) => {
     if (b.kind !== 'header') return b;
-    const el = document.querySelector(`[data-block-id="${b.id}"] .e-banner__wrap`);
-    if (!el) return b;
+    const live = document.querySelector(`[data-block-id="${b.id}"] .e-banner__wrap`);
+    if (!live) return b;
+
+    // Off-screen container fixed at 750x205, clipping any overflow
+    const stage = document.createElement('div');
+    stage.style.cssText = 'position:fixed;left:-99999px;top:0;width:750px;height:205px;overflow:hidden;pointer-events:none;';
+    const clone = live.cloneNode(true);
+    // Strip the canvas's responsive scale transform so we capture at native size
+    clone.style.transform = 'none';
+    clone.style.width = '750px';
+    clone.style.height = '205px';
+    stage.appendChild(clone);
+    document.body.appendChild(stage);
+    // Yield one frame so the browser lays out the clone before capture
+    await new Promise(r => requestAnimationFrame(r));
+
     try {
-      const canvas = await html2canvas(el, {
+      const canvas = await html2canvas(clone, {
         width: 750,
         height: 205,
         scale: 2,
@@ -26,6 +41,8 @@ async function rasteriseBanners(blocks) {
     } catch (e) {
       console.warn('Banner rasterise failed:', e);
       return b;
+    } finally {
+      document.body.removeChild(stage);
     }
   }));
 }
