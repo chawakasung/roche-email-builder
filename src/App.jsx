@@ -35,7 +35,7 @@ function App() {
   const [draggingId, setDraggingId] = useState(null);
   const [dropIndex, setDropIndex] = useState(null);
   const [emailName, setEmailName] = useState('Q2 Town Hall — internal');
-  const [lang] = useState('bilingual');
+  const [lang] = useState('en');
 
   const onSettings = (patch) => setSettingsState(s => ({ ...s, ...patch }));
 
