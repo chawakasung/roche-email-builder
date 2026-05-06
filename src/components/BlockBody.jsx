@@ -97,9 +97,9 @@ export function BlockBody({ kind, props, brand, editing, onEdit, onCloseLetter }
     case 'divider': return <div className="e-divider-wrap"><div className="e-divider" /></div>;
     case 'spacer': return <div className="e-spacer" style={{ height: (Number(props.height) || 32) + 'px' }}><span className="e-spacer__lbl">{Number(props.height) || 32}px</span></div>;
     case 'notice': return (
-      <div className="e-notice">
-        <p className="e-notice__note" {...ce('note')}>{props.note}</p>
-        <p className="e-notice__linkrow"><a className="e-notice__link" style={{ color: brand.primary }} href={props.linkHref || '#'} {...ce('linkText')}>{props.linkText}</a></p>
+      <div className="e-notice" style={{ textAlign: 'right' }}>
+        <p className="e-notice__note" style={{ textAlign: 'right' }} {...ce('note')}>{props.note}</p>
+        <p className="e-notice__linkrow" style={{ textAlign: 'right' }}><a className="e-notice__link" style={{ color: brand.primary }} href={props.linkHref || '#'} {...ce('linkText')}>{props.linkText}</a></p>
       </div>
     );
     case 'quote': return (
