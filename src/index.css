@@ -97,7 +97,7 @@ button { font-family: inherit; }
 .block.is-selected [contenteditable="true"]:hover, .block.is-selected [contenteditable="true"]:focus { background: rgba(11,65,205,.06); box-shadow: inset 0 0 0 1px rgba(11,65,205,.3); }
 
 /* ===== EMAIL BLOCK STYLES ===== */
-.e-banner { display: block; padding: 0; margin-bottom: 24px; }
+.e-banner { display: block; padding: 0; margin-bottom: 40px; }
 .e-banner__scaler { width: 100%; overflow: hidden; position: relative; }
 .e-banner__wrap { position: relative; width: 750px !important; min-width: 750px; max-width: 750px; height: 205px !important; min-height: 205px; max-height: 205px; display: flex; overflow: hidden; flex-shrink: 0; box-sizing: border-box; }
 .e-banner__logo { position: absolute; top: 20px; left: 20px; z-index: 5; pointer-events: none; }

@@ -27,6 +27,7 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
         const alt = esc(props.headline || 'Email banner');
         return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
           <tr><td style="padding:0;font-size:0;line-height:0;"><img src="${props._renderedImg}" width="750" alt="${alt}" style="display:block;border:0;outline:none;text-decoration:none;width:100%;max-width:750px;height:auto;" /></td></tr>
+          <tr><td style="height:40px;font-size:0;line-height:0;">&nbsp;</td></tr>
         </table>`;
       }
       // Fallback: HTML/CSS layout (used by HTML download, where we don't rasterise)
@@ -50,6 +51,7 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
 
       return `<table role="presentation" class="banner-table" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
         <tr>${flipped ? rightTd + leftTd : leftTd + rightTd}</tr>
+        <tr><td colspan="2" style="height:40px;font-size:0;line-height:0;">&nbsp;</td></tr>
       </table>`;
     }
 
