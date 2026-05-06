@@ -33,7 +33,7 @@ export const DEFAULT_PROPS = {
   header: {
     img: '', alt: 'Email banner', href: '',
     headline: 'A passion for impossible discovery',
-    fontSize: 26, bgColor: '#FFF7F5', flipped: false, showLogo: true,
+    fontSize: 38, bgColor: '#FFF7F5', flipped: false, showLogo: true,
     imgX: 50, imgY: 50,
   },
   hero: {

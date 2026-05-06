@@ -31,7 +31,7 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
 
       const leftTd = `<td class="banner-cell banner-cell--text" width="410" bgcolor="${bg}" valign="middle" style="width:410px;height:205px;background-color:${bg};padding:24px 20px;vertical-align:middle;">
         ${showLogo ? `<table border="0" cellpadding="0" cellspacing="0"><tr><td style="padding:0 0 10px;">${rocheLogoImg(flipped)}</td></tr></table>` : ''}
-        <p style="font-family:Arial,Helvetica,sans-serif;font-weight:300;font-size:${fs}px;line-height:1.22;color:#000000;margin:0;">${headline}</p>
+        <p style="font-family:Arial,Helvetica,sans-serif;font-weight:300;font-size:${fs}px;line-height:1.1;color:#000000;margin:0;letter-spacing:-0.01em;">${headline}</p>
       </td>`;
 
       const rightTd = img
