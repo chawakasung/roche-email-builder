@@ -25,8 +25,10 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
       // identical to the canvas, sidesteps every email-client CSS quirk.
       if (props._renderedImg) {
         const alt = esc(props.headline || 'Email banner');
+        const spacer = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
         return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
-          <tr><td style="padding:0 0 40px;font-size:0;line-height:0;mso-line-height-rule:exactly;"><img src="${props._renderedImg}" width="750" alt="${alt}" style="display:block;border:0;outline:none;text-decoration:none;width:100%;max-width:750px;height:auto;" /></td></tr>
+          <tr><td style="padding:0;font-size:0;line-height:0;"><img src="${props._renderedImg}" width="750" alt="${alt}" style="display:block;border:0;outline:none;text-decoration:none;width:100%;max-width:750px;height:auto;" /></td></tr>
+          <tr><td height="40" style="height:40px;line-height:40px;font-size:0;mso-line-height-rule:exactly;"><img src="${spacer}" width="1" height="40" alt="" style="display:block;border:0;outline:none;width:1px;height:40px;" /></td></tr>
         </table>`;
       }
       // Fallback: HTML/CSS layout (used by HTML download, where we don't rasterise)
@@ -48,12 +50,14 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
         ? `<td class="banner-cell banner-cell--img" width="340" valign="middle" bgcolor="#d8d5d0" style="width:340px;height:205px;background-color:#d8d5d0;padding:0;font-size:0;line-height:0;"><img class="banner-img" src="${img}" width="340" height="205" alt="" style="display:block;border:0;outline:none;text-decoration:none;width:340px;height:205px;object-fit:cover;object-position:${imgX}% ${imgY}%;" /></td>`
         : `<td class="banner-cell banner-cell--img" width="340" bgcolor="#d8d5d0" style="width:340px;height:205px;background-color:#d8d5d0;">&nbsp;</td>`;
 
-      return `<table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
-        <tr><td style="padding:0 0 40px;font-size:0;line-height:0;mso-line-height-rule:exactly;">
+      const spacer = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+      return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
+        <tr><td style="padding:0;font-size:0;line-height:0;">
           <table role="presentation" class="banner-table" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
             <tr>${flipped ? rightTd + leftTd : leftTd + rightTd}</tr>
           </table>
         </td></tr>
+        <tr><td height="40" style="height:40px;line-height:40px;font-size:0;mso-line-height-rule:exactly;"><img src="${spacer}" width="1" height="40" alt="" style="display:block;border:0;outline:none;width:1px;height:40px;" /></td></tr>
       </table>`;
     }
 
