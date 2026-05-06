@@ -14,7 +14,7 @@ function esc(t) {
 // unlike inline SVG which Gmail/Outlook strip).
 function rocheLogoImg(flipped = false) {
   const src = flipped ? ROCHE_LOGO_WHITE_DATA_URL : ROCHE_LOGO_BLUE_DATA_URL;
-  return `<img src="${src}" alt="Roche" width="80" height="42" style="display:block;border:0;outline:none;text-decoration:none;width:80px;height:42px;" />`;
+  return `<img src="${src}" alt="Roche" width="80" height="42" class="roche-logo" style="display:block;border:0;outline:none;text-decoration:none;width:80px;height:42px;" />`;
 }
 
 function blockToEmailHTML(kind, props, primary, heroBg) {
@@ -26,21 +26,20 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
       const flipped = !!props.flipped;
       const showLogo = props.showLogo !== false;
       const img = props.img || '';
-      const logoCell = showLogo ? `<td style="padding:0 0 10px;">${rocheLogoImg(flipped)}</td>` : '';
+      const imgX = props.imgX != null ? props.imgX : 50;
+      const imgY = props.imgY != null ? props.imgY : 50;
 
-      const leftTd = `<td width="410" bgcolor="${bg}" valign="middle" style="width:410px;height:205px;background-color:${bg};padding:24px 20px;vertical-align:middle;">
-        ${showLogo ? `<table border="0" cellpadding="0" cellspacing="0"><tr>${logoCell}</tr></table>` : ''}
+      const leftTd = `<td class="banner-cell banner-cell--text" width="410" bgcolor="${bg}" valign="middle" style="width:410px;height:205px;background-color:${bg};padding:24px 20px;vertical-align:middle;">
+        ${showLogo ? `<table border="0" cellpadding="0" cellspacing="0"><tr><td style="padding:0 0 10px;">${rocheLogoImg(flipped)}</td></tr></table>` : ''}
         <p style="font-family:Arial,Helvetica,sans-serif;font-weight:300;font-size:${fs}px;line-height:1.22;color:#000000;margin:0;">${headline}</p>
       </td>`;
 
-      const imgX = props.imgX != null ? props.imgX : 50;
-      const imgY = props.imgY != null ? props.imgY : 50;
       const rightTd = img
-        ? `<td width="340" valign="middle" bgcolor="#d8d5d0" style="width:340px;height:205px;background-color:#d8d5d0;padding:0;font-size:0;line-height:0;"><img src="${img}" width="340" height="205" alt="" style="display:block;border:0;outline:none;text-decoration:none;width:340px;height:205px;object-fit:cover;object-position:${imgX}% ${imgY}%;" /></td>`
-        : `<td width="340" bgcolor="#d8d5d0" style="width:340px;height:205px;background-color:#d8d5d0;">&nbsp;</td>`;
+        ? `<td class="banner-cell banner-cell--img" width="340" valign="middle" bgcolor="#d8d5d0" style="width:340px;height:205px;background-color:#d8d5d0;padding:0;font-size:0;line-height:0;"><img class="banner-img" src="${img}" width="340" height="205" alt="" style="display:block;border:0;outline:none;text-decoration:none;width:340px;height:205px;object-fit:cover;object-position:${imgX}% ${imgY}%;" /></td>`
+        : `<td class="banner-cell banner-cell--img" width="340" bgcolor="#d8d5d0" style="width:340px;height:205px;background-color:#d8d5d0;">&nbsp;</td>`;
 
-      return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;min-width:750px;">
-        <tr height="205">${flipped ? rightTd + leftTd : leftTd + rightTd}</tr>
+      return `<table role="presentation" class="banner-table" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
+        <tr>${flipped ? rightTd + leftTd : leftTd + rightTd}</tr>
       </table>`;
     }
 
@@ -340,7 +339,15 @@ export function generateEmailHTML(blocks, settings) {
   @media only screen and (max-width: 600px) {
     .email-container { width: 100% !important; min-width: 100% !important; }
     .stack-column { display: block !important; width: 100% !important; }
-    img { width: 100% !important; height: auto !important; }
+    img { max-width: 100% !important; height: auto !important; }
+    /* Banner: stack cells vertically and scale image to width */
+    .banner-table, .banner-table tr, .banner-table tbody { display: block !important; width: 100% !important; }
+    .banner-cell { display: block !important; width: 100% !important; height: auto !important; box-sizing: border-box !important; }
+    .banner-cell--text { padding: 20px !important; }
+    .banner-cell--img { padding: 0 !important; }
+    .banner-img { width: 100% !important; height: auto !important; max-height: 240px !important; object-fit: cover !important; }
+    /* Roche logo: keep fixed size — never expand to 100% on mobile */
+    .roche-logo { width: 80px !important; height: 42px !important; }
   }
 </style>
 </head>
