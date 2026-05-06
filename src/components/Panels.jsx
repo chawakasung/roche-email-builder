@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { BLOCK_LIBRARY, BLOCK_GROUPS, FIELDS, blockLabel } from '../data/blocks.js';
 import { BLOCK_ICONS } from './icons.jsx';
+import { createSheet, getSheet, downloadCodeGs, clearAccessToken } from '../utils/googleSheet.js';
 
 // ─── Bilingual label ───────
 export function Lbl({ en, th, lang }) {
@@ -173,6 +174,9 @@ function Inspector({ lang, block, onChange }) {
         <div className="ttl"><span className="en">{lbl.en}</span>{lang !== 'en' && <span className="th">{lbl.th}</span>}</div>
         <span className="id">#{block.id}</span>
       </div>
+      {block.kind === 'mediaform' && (
+        <SheetConnector lang={lang} block={block} onChange={onChange} />
+      )}
       {fields.length === 0 && (
         <div className="empty-state">
           <Lbl en="This block has no editable content" th="บล็อกนี้ไม่มีเนื้อหาที่แก้ไขได้" lang={lang} />
@@ -223,6 +227,114 @@ function Inspector({ lang, block, onChange }) {
           )}
         </div>
       ))}
+    </div>
+  );
+}
+
+// ─── Google Sheet connector for the Media Form block ───────
+function SheetConnector({ lang, block, onChange }) {
+  const [busy, setBusy] = useState(null); // 'connect' | 'verify' | null
+  const [err, setErr] = useState(null);
+  const sheetId = block.props.spreadsheet_id;
+  const sheetName = block.props.spreadsheet_name;
+  const sheetUrl = block.props.spreadsheet_url;
+
+  const set = (patch) => Object.entries(patch).forEach(([k, v]) => onChange(block.id, k, v));
+
+  async function handleConnect() {
+    setErr(null); setBusy('connect');
+    try {
+      const title = `Roche Media Registrations — ${new Date().toISOString().slice(0, 10)}`;
+      const sheet = await createSheet({ title });
+      set({
+        spreadsheet_id: sheet.id,
+        spreadsheet_name: sheet.name,
+        spreadsheet_url: sheet.url,
+      });
+    } catch (e) {
+      setErr(e.message);
+    } finally { setBusy(null); }
+  }
+
+  async function handleChange() {
+    setErr(null); setBusy('connect');
+    try {
+      const title = `Roche Media Registrations — ${new Date().toISOString().slice(0, 10)}`;
+      const sheet = await createSheet({ title });
+      set({
+        spreadsheet_id: sheet.id,
+        spreadsheet_name: sheet.name,
+        spreadsheet_url: sheet.url,
+      });
+    } catch (e) {
+      setErr(e.message);
+    } finally { setBusy(null); }
+  }
+
+  function handleDisconnect() {
+    set({ spreadsheet_id: '', spreadsheet_name: '', spreadsheet_url: '' });
+    clearAccessToken();
+  }
+
+  async function handlePasteId() {
+    const id = prompt(lang === 'th' ? 'วาง Spreadsheet ID' : 'Paste a Spreadsheet ID:');
+    if (!id) return;
+    setErr(null); setBusy('verify');
+    try {
+      const sheet = await getSheet(id.trim());
+      set({
+        spreadsheet_id: sheet.id,
+        spreadsheet_name: sheet.name,
+        spreadsheet_url: sheet.url,
+      });
+    } catch (e) {
+      setErr(e.message);
+    } finally { setBusy(null); }
+  }
+
+  return (
+    <div className="insp__row" style={{ background: 'var(--grey-5)', margin: '-1px 0 0', padding: '12px 14px', borderTop: '1px solid var(--hairline)' }}>
+      <label style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#0f9d58"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM8 17H6V10h2v7zm5 0h-2V7h2v10zm5 0h-2v-4h2v4z"/></svg>
+        <Lbl en="Send to Google Sheet" th="ส่งไปที่ Google Sheet" lang={lang} />
+      </label>
+
+      {sheetId ? (
+        <div>
+          <div style={{ background: '#fff', border: '1px solid var(--hairline)', padding: '8px 10px', fontSize: 12, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#0f9d58" style={{ flexShrink: 0 }}><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+            <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={sheetName}>{sheetName || sheetId}</span>
+          </div>
+          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', fontSize: 11 }}>
+            <a href={sheetUrl} target="_blank" rel="noopener" className="btn sm" style={{ textDecoration: 'none' }}>{lang === 'th' ? 'เปิด' : 'Open'}</a>
+            <button className="btn sm" type="button" onClick={handleChange} disabled={!!busy}>
+              {busy === 'connect' ? '…' : (lang === 'th' ? 'เปลี่ยน Sheet' : 'Change Sheet')}
+            </button>
+            <button className="btn sm" type="button" onClick={() => downloadCodeGs(sheetId)}>
+              {lang === 'th' ? 'ดาวน์โหลด Code.gs' : 'Download Code.gs'}
+            </button>
+            <button className="btn sm" type="button" onClick={handleDisconnect}>
+              {lang === 'th' ? 'ตัดการเชื่อมต่อ' : 'Disconnect'}
+            </button>
+          </div>
+          <p style={{ fontSize: 10, color: 'var(--fg-3)', margin: '8px 0 0', lineHeight: 1.4 }}>
+            {lang === 'th'
+              ? 'ดาวน์โหลด Code.gs แล้วทำตาม google-apps-script/SETUP.md เพื่อ deploy แล้ววาง Web app URL ในช่อง Submit URL ด้านล่าง'
+              : 'Download Code.gs, then follow google-apps-script/SETUP.md to deploy it; paste the Web app URL into the Submit URL field below.'}
+          </p>
+        </div>
+      ) : (
+        <div>
+          <button className="btn primary" type="button" onClick={handleConnect} disabled={!!busy} style={{ width: '100%', justifyContent: 'center' }}>
+            {busy === 'connect' ? (lang === 'th' ? 'กำลังเชื่อมต่อ…' : 'Connecting…') : (lang === 'th' ? 'เชื่อมต่อ Google Sheet' : 'Connect Google Sheet')}
+          </button>
+          <button className="btn sm" type="button" onClick={handlePasteId} disabled={!!busy} style={{ marginTop: 6, fontSize: 11 }}>
+            {busy === 'verify' ? '…' : (lang === 'th' ? 'หรือ วาง Sheet ID ที่มีอยู่แล้ว' : 'Or paste an existing Sheet ID')}
+          </button>
+        </div>
+      )}
+
+      {err && <p style={{ color: 'var(--red-dark)', fontSize: 11, margin: '8px 0 0' }}>{err}</p>}
     </div>
   );
 }
