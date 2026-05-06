@@ -102,34 +102,92 @@ export function BlockBody({ kind, props, brand, editing, onEdit, onCloseLetter }
         <a className="e-notice__link" style={{ color: brand.primary }} href={props.linkHref || '#'} {...ce('linkText')}>{props.linkText}</a>
       </div>
     );
-    case 'webinar': return (
-      <div className="e-webinar">
-        <div className="e-webinar__banner" style={{ height: (Number(props.bannerH) || 280) + 'px' }}>
-          <EditableImage src={props.bannerImg} editing={editing} onReplace={v => onEdit('bannerImg', v)} widthPct={100} heightPx={Number(props.bannerH) || 280} onResize={(_w, h) => onEdit('bannerH', h)} defaultHeight={280} allowResize={true} />
-        </div>
-        <div className="e-webinar__body">
-          <h1 className="e-webinar__title" {...ce('title')}>{props.title}</h1>
-          <div className="e-webinar__speaker" style={{ gridTemplateColumns: ((Number(props.speakerSize) || 160) + 40) + 'px 1fr' }}>
-            <div className="e-webinar__speaker-img" style={{ width: (Number(props.speakerSize) || 160) + 'px', height: (Number(props.speakerSize) || 160) + 'px', borderRadius: ((Number(props.speakerSize) || 160) / 2) + 'px' }}>
-              <EditableImage src={props.speakerImg} editing={editing} onReplace={v => onEdit('speakerImg', v)} widthPct={100} heightPx={Number(props.speakerSize) || 160} onResize={(_w, h) => onEdit('speakerSize', h)} defaultHeight={160} allowResize={true} />
+    case 'webinar': {
+      const speakerSize = Number(props.speakerSize) || 160;
+      const onSpeakerResize = (e) => {
+        if (!editing) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const startPt = e.touches ? e.touches[0] : e;
+        const startX = startPt.clientX;
+        const startY = startPt.clientY;
+        const startSize = speakerSize;
+        const move = (ev) => {
+          const pt = ev.touches ? ev.touches[0] : ev;
+          const dx = pt.clientX - startX;
+          const dy = pt.clientY - startY;
+          const delta = Math.max(dx, dy);
+          const newSize = Math.max(80, Math.min(360, startSize + delta));
+          onEdit('speakerSize', Math.round(newSize));
+          if (ev.preventDefault) ev.preventDefault();
+        };
+        const up = () => {
+          window.removeEventListener('mousemove', move);
+          window.removeEventListener('mouseup', up);
+          window.removeEventListener('touchmove', move);
+          window.removeEventListener('touchend', up);
+        };
+        window.addEventListener('mousemove', move);
+        window.addEventListener('mouseup', up);
+        window.addEventListener('touchmove', move, { passive: false });
+        window.addEventListener('touchend', up);
+      };
+      const onSpeakerPick = (e) => {
+        if (!editing) return;
+        e.stopPropagation();
+        const inp = document.createElement('input');
+        inp.type = 'file';
+        inp.accept = 'image/*';
+        inp.onchange = (ev) => {
+          const f = ev.target.files?.[0];
+          if (!f) return;
+          const r = new FileReader();
+          r.onload = () => onEdit('speakerImg', r.result);
+          r.readAsDataURL(f);
+        };
+        inp.click();
+      };
+      return (
+        <div className="e-webinar">
+          <div className="e-webinar__banner" style={{ height: (Number(props.bannerH) || 280) + 'px' }}>
+            <EditableImage src={props.bannerImg} editing={editing} onReplace={v => onEdit('bannerImg', v)} widthPct={100} heightPx={Number(props.bannerH) || 280} onResize={(_w, h) => onEdit('bannerH', h)} defaultHeight={280} allowResize={true} />
+          </div>
+          <div className="e-webinar__body">
+            <div className="e-webinar__head">
+              <div className="e-webinar__photo" style={{ width: speakerSize + 'px', height: speakerSize + 'px' }}>
+                {props.speakerImg ? (
+                  <img src={props.speakerImg} alt={props.speakerName || ''} onClick={onSpeakerPick} />
+                ) : (
+                  <div className="e-webinar__photo-ph" onClick={onSpeakerPick}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="9" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
+                  </div>
+                )}
+                {editing && props.speakerImg && (
+                  <button className="e-webinar__photo-replace" onClick={onSpeakerPick} onMouseDown={e => e.stopPropagation()}>⇄ Replace</button>
+                )}
+                {editing && (
+                  <div className="e-webinar__photo-resize" onMouseDown={onSpeakerResize} onTouchStart={onSpeakerResize} title="Drag to resize">
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 11 L11 2 M6 11 L11 6 M9 11 L11 9"/></svg>
+                  </div>
+                )}
+              </div>
+              <h1 className="e-webinar__title" {...ce('title')}>{props.title}</h1>
             </div>
-            <div className="e-webinar__speaker-info">
-              <p className="e-webinar__desc" {...ce('description')}>{props.description}</p>
-              <h3 className="e-webinar__speaker-name" {...ce('speakerName')}>{props.speakerName}</h3>
-              <p className="e-webinar__speaker-credentials" {...ce('speakerInfo')}>{props.speakerInfo}</p>
-              <div className="e-webinar__when">
-                <p className="e-webinar__date" style={{ color: brand.primary }} {...ce('date')}>{props.date}</p>
-                <p className="e-webinar__time" style={{ color: brand.primary }} {...ce('time')}>{props.time}</p>
-              </div>
-              <p className="e-webinar__disclaimer" {...ce('disclaimer')}>{props.disclaimer}</p>
-              <div className="e-webinar__cta-wrap">
-                <a className="e-webinar__cta" style={{ background: brand.primary }} href={props.ctaHref || '#'} {...ce('ctaLabel')}>{props.ctaLabel}</a>
-              </div>
+            <p className="e-webinar__desc" {...ce('description')}>{props.description}</p>
+            <h3 className="e-webinar__speaker-name" {...ce('speakerName')}>{props.speakerName}</h3>
+            <p className="e-webinar__speaker-credentials" {...ce('speakerInfo')}>{props.speakerInfo}</p>
+            <div className="e-webinar__when">
+              <p className="e-webinar__date" style={{ color: brand.primary }} {...ce('date')}>{props.date}</p>
+              <p className="e-webinar__time" style={{ color: brand.primary }} {...ce('time')}>{props.time}</p>
+            </div>
+            <p className="e-webinar__disclaimer" {...ce('disclaimer')}>{props.disclaimer}</p>
+            <div className="e-webinar__cta-wrap">
+              <a className="e-webinar__cta" style={{ background: brand.primary }} href={props.ctaHref || '#'} {...ce('ctaLabel')}>{props.ctaLabel}</a>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
     case 'quote': return (
       <div className="e-quote">
         <div className="e-quote__inner" style={{ borderLeftColor: brand.primary, maxWidth: (props.width ?? 100) + '%', marginLeft: 'auto', marginRight: 'auto' }}>
