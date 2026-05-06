@@ -109,9 +109,9 @@ export function BlockBody({ kind, props, brand, editing, onEdit, onCloseLetter }
         </div>
         <div className="e-webinar__body">
           <h1 className="e-webinar__title" {...ce('title')}>{props.title}</h1>
-          <div className="e-webinar__speaker">
-            <div className="e-webinar__speaker-img">
-              <EditableImage src={props.speakerImg} editing={editing} onReplace={v => onEdit('speakerImg', v)} widthPct={100} heightPx={160} defaultHeight={160} allowResize={false} />
+          <div className="e-webinar__speaker" style={{ gridTemplateColumns: ((Number(props.speakerSize) || 160) + 40) + 'px 1fr' }}>
+            <div className="e-webinar__speaker-img" style={{ width: (Number(props.speakerSize) || 160) + 'px', height: (Number(props.speakerSize) || 160) + 'px', borderRadius: ((Number(props.speakerSize) || 160) / 2) + 'px' }}>
+              <EditableImage src={props.speakerImg} editing={editing} onReplace={v => onEdit('speakerImg', v)} widthPct={100} heightPx={Number(props.speakerSize) || 160} onResize={(_w, h) => onEdit('speakerSize', h)} defaultHeight={160} allowResize={true} />
             </div>
             <div className="e-webinar__speaker-info">
               <p className="e-webinar__desc" {...ce('description')}>{props.description}</p>

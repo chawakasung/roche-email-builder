@@ -204,9 +204,14 @@ button { font-family: inherit; }
 .e-webinar__body { padding: 32px 40px 40px; }
 .e-webinar__title { font-family: var(--font-roche); font-weight: 300; font-size: 32px; line-height: 1.15; color: var(--fg-1); letter-spacing: -.01em; margin: 0 0 24px; }
 .e-webinar__speaker { display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: start; margin-bottom: 24px; }
-.e-webinar__speaker-img { width: 160px; height: 160px; border-radius: 80px; overflow: hidden; background: #DBD6D1; flex-shrink: 0; }
-.e-webinar__speaker-img .edit-img { width: 100% !important; height: 100% !important; margin-bottom: 0; }
-.e-webinar__speaker-img img { width: 160px !important; height: 160px !important; border-radius: 80px; object-fit: cover; }
+.e-webinar__speaker-img { width: 160px; height: 160px; border-radius: 80px; overflow: hidden; background: #DBD6D1; flex-shrink: 0; position: relative; }
+.e-webinar__speaker-img .edit-img { width: 100% !important; height: 100% !important; margin-bottom: 0; border-radius: inherit; }
+.e-webinar__speaker-img .edit-img img { width: 100% !important; height: 100% !important; border-radius: inherit; object-fit: cover; }
+.e-webinar__speaker-img img { width: 100% !important; height: 100% !important; border-radius: inherit; object-fit: cover; }
+/* Mobile preview (canvas in 380px shell): stack columns, center text */
+.device-shell.mobile .e-webinar__speaker { grid-template-columns: 1fr !important; justify-items: center; gap: 16px; text-align: center; }
+.device-shell.mobile .e-webinar__speaker-img { margin: 0 auto; }
+.device-shell.mobile .e-webinar__cta { padding: 14px 56px; }
 .e-webinar__speaker-info { min-width: 0; }
 .e-webinar__desc { font-family: var(--font-roche); font-weight: 400; font-size: 15px; line-height: 1.55; color: var(--fg-1); margin: 0 0 20px; }
 .e-webinar__speaker-name { font-family: var(--font-roche); font-weight: 700; font-size: 15px; color: var(--fg-1); margin: 0 0 6px; line-height: 1.4; }

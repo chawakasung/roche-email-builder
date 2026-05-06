@@ -240,6 +240,8 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
       const title = esc(props.title || '');
       const description = esc(props.description || '');
       const speakerImg = props.speakerImg || '';
+      const speakerSize = Math.max(80, Math.min(400, Number(props.speakerSize) || 160));
+      const speakerColW = speakerSize + 40;
       const speakerName = esc(props.speakerName || '');
       const speakerInfo = esc(props.speakerInfo || '');
       const date = esc(props.date || '');
@@ -258,8 +260,8 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
         <tr><td style="padding:0 40px;">
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
-              <td class="stack-column webinar-img-col" width="200" valign="top" style="vertical-align:top;padding:0 24px 0 0;">
-                ${speakerImg ? `<img class="webinar-speaker-img" src="${speakerImg}" width="160" height="160" alt="${speakerName}" style="display:block;width:160px;height:160px;border-radius:80px;object-fit:cover;background-color:#DBD6D1;" />` : `<div style="width:160px;height:160px;border-radius:80px;background-color:#DBD6D1;">&nbsp;</div>`}
+              <td class="stack-column webinar-img-col" width="${speakerColW}" valign="top" style="vertical-align:top;padding:0 24px 0 0;">
+                ${speakerImg ? `<img class="webinar-speaker-img" src="${speakerImg}" width="${speakerSize}" height="${speakerSize}" alt="${speakerName}" style="display:block;width:${speakerSize}px;height:${speakerSize}px;border-radius:${Math.round(speakerSize/2)}px;object-fit:cover;background-color:#DBD6D1;" />` : `<div style="width:${speakerSize}px;height:${speakerSize}px;border-radius:${Math.round(speakerSize/2)}px;background-color:#DBD6D1;">&nbsp;</div>`}
               </td>
               <td class="stack-column webinar-text-col" valign="top" style="vertical-align:top;">
                 <p class="webinar-desktop-desc" style="font-family:Arial,Helvetica,sans-serif;font-weight:400;font-size:15px;line-height:1.55;color:#544F4F;margin:0 0 20px;">${description}</p>
