@@ -28,7 +28,7 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
         const spacer = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
         return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
           <tr><td style="padding:0;font-size:0;line-height:0;"><img src="${props._renderedImg}" width="750" alt="${alt}" style="display:block;border:0;outline:none;text-decoration:none;width:100%;max-width:750px;height:auto;" /></td></tr>
-          <tr><td height="40" style="height:40px;line-height:40px;font-size:0;mso-line-height-rule:exactly;"><img src="${spacer}" width="1" height="40" alt="" style="display:block;border:0;outline:none;width:1px;height:40px;" /></td></tr>
+          <tr><td height="72" style="height:72px;line-height:72px;font-size:0;mso-line-height-rule:exactly;"><img src="${spacer}" width="1" height="72" alt="" style="display:block;border:0;outline:none;width:1px;height:72px;" /></td></tr>
         </table>`;
       }
       // Fallback: HTML/CSS layout (used by HTML download, where we don't rasterise)
@@ -57,7 +57,7 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
             <tr>${flipped ? rightTd + leftTd : leftTd + rightTd}</tr>
           </table>
         </td></tr>
-        <tr><td height="40" style="height:40px;line-height:40px;font-size:0;mso-line-height-rule:exactly;"><img src="${spacer}" width="1" height="40" alt="" style="display:block;border:0;outline:none;width:1px;height:40px;" /></td></tr>
+        <tr><td height="72" style="height:72px;line-height:72px;font-size:0;mso-line-height-rule:exactly;"><img src="${spacer}" width="1" height="72" alt="" style="display:block;border:0;outline:none;width:1px;height:72px;" /></td></tr>
       </table>`;
     }
 
@@ -221,6 +221,14 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
       return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0">
         <tr><td style="padding:16px 32px;"><div style="height:1px;background-color:rgba(10,16,32,0.12);font-size:0;line-height:0;">&nbsp;</div></td></tr>
       </table>`;
+
+    case 'spacer': {
+      const h = Math.max(1, Math.round(Number(props.height) || 32));
+      const spacer = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+      return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
+        <tr><td height="${h}" style="height:${h}px;line-height:${h}px;font-size:0;mso-line-height-rule:exactly;"><img src="${spacer}" width="1" height="${h}" alt="" style="display:block;border:0;outline:none;width:1px;height:${h}px;" /></td></tr>
+      </table>`;
+    }
 
     case 'quote': {
       const text = esc(props.text || '');

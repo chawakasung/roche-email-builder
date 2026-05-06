@@ -95,6 +95,7 @@ export function BlockBody({ kind, props, brand, editing, onEdit, onCloseLetter }
       </div>
     );
     case 'divider': return <div className="e-divider-wrap"><div className="e-divider" /></div>;
+    case 'spacer': return <div className="e-spacer" style={{ height: (Number(props.height) || 32) + 'px' }}><span className="e-spacer__lbl">{Number(props.height) || 32}px</span></div>;
     case 'quote': return (
       <div className="e-quote">
         <div className="e-quote__inner" style={{ borderLeftColor: brand.primary, maxWidth: (props.width ?? 100) + '%', marginLeft: 'auto', marginRight: 'auto' }}>
