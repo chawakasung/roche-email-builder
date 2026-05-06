@@ -228,8 +228,8 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
       const linkHref = esc(props.linkHref || '#');
       return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0">
         <tr><td style="padding:8px 32px 0;">
-          <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-style:italic;color:#706B69;margin:0 0 6px;text-align:right;">${note}</p>
-          <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${primary};margin:0;text-align:right;"><a href="${linkHref}" style="color:${primary};text-decoration:underline;">${linkText}</a></p>
+          <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-style:italic;color:#706B69;margin:0 0 6px;text-align:left;">${note}</p>
+          <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${primary};margin:0;text-align:left;"><a href="${linkHref}" style="color:${primary};text-decoration:underline;">${linkText}</a></p>
         </td></tr>
       </table>`;
     }
