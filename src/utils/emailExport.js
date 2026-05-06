@@ -114,8 +114,8 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
         const src = props[k] || '';
         const h = Number(props[`${k}_h`]) || 140;
         return src
-          ? `<td width="228" style="padding:0 3px;"><img src="${src}" width="228" height="${h}" alt="" style="display:block;width:228px;height:${h}px;object-fit:cover;" /></td>`
-          : `<td width="228" style="padding:0 3px;background-color:#DBD6D1;height:${h}px;">&nbsp;</td>`;
+          ? `<td class="stack-column" width="228" style="padding:0 3px;"><img class="col-img" src="${src}" width="228" height="${h}" alt="" style="display:block;width:228px;height:${h}px;object-fit:cover;" /></td>`
+          : `<td class="stack-column" width="228" style="padding:0 3px;background-color:#DBD6D1;height:${h}px;">&nbsp;</td>`;
       });
       return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0">
         <tr><td style="padding:20px 32px;">
@@ -132,8 +132,8 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
         const copy = esc(props[`${k}_copy`] || '');
         const cta = esc(props[`${k}_cta`] || '');
         const href = esc(props[`${k}_href`] || '#');
-        return `<td width="336" valign="top" style="vertical-align:top;padding:0 9px;">
-          ${img ? `<img src="${img}" width="336" height="${imgH}" alt="" style="display:block;width:336px;height:${imgH}px;object-fit:cover;margin-bottom:10px;" />` : `<div style="width:336px;height:${imgH}px;background-color:#DBD6D1;margin-bottom:10px;">&nbsp;</div>`}
+        return `<td class="stack-column" width="336" valign="top" style="vertical-align:top;padding:0 9px;">
+          ${img ? `<img class="col-img" src="${img}" width="336" height="${imgH}" alt="" style="display:block;width:336px;height:${imgH}px;object-fit:cover;margin-bottom:10px;" />` : `<div style="width:336px;height:${imgH}px;background-color:#DBD6D1;margin-bottom:10px;">&nbsp;</div>`}
           <h3 style="font-family:Arial,sans-serif;font-weight:300;font-size:22px;line-height:1.2;color:#544F4F;margin:0 0 8px;">${title}</h3>
           <p style="font-family:Arial,sans-serif;font-weight:300;font-size:16px;line-height:1.5;color:#544F4F;margin:0 0 8px;">${copy}</p>
           ${cta ? `<a href="${href}" style="font-family:Arial,sans-serif;font-size:16px;color:${primary};text-decoration:none;">${cta}</a>` : ''}
@@ -154,8 +154,8 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
         const copy = esc(props[`${k}_copy`] || '');
         const cta = esc(props[`${k}_cta`] || '');
         const href = esc(props[`${k}_href`] || '#');
-        return `<td width="214" valign="top" style="vertical-align:top;padding:0 6px;">
-          ${img ? `<img src="${img}" width="214" height="${imgH}" alt="" style="display:block;width:214px;height:${imgH}px;object-fit:cover;margin-bottom:8px;" />` : `<div style="width:214px;height:${imgH}px;background-color:#DBD6D1;margin-bottom:8px;">&nbsp;</div>`}
+        return `<td class="stack-column" width="214" valign="top" style="vertical-align:top;padding:0 6px;">
+          ${img ? `<img class="col-img" src="${img}" width="214" height="${imgH}" alt="" style="display:block;width:214px;height:${imgH}px;object-fit:cover;margin-bottom:8px;" />` : `<div style="width:214px;height:${imgH}px;background-color:#DBD6D1;margin-bottom:8px;">&nbsp;</div>`}
           <h3 style="font-family:Arial,sans-serif;font-weight:300;font-size:20px;line-height:1.2;color:#544F4F;margin:0 0 6px;">${title}</h3>
           <p style="font-family:Arial,sans-serif;font-weight:300;font-size:15px;line-height:1.5;color:#544F4F;margin:0 0 6px;">${copy}</p>
           ${cta ? `<a href="${href}" style="font-family:Arial,sans-serif;font-size:15px;color:${primary};text-decoration:none;">${cta}</a>` : ''}
@@ -358,8 +358,10 @@ export function generateEmailHTML(blocks, settings) {
   a { color: ${primary}; }
   @media only screen and (max-width: 600px) {
     .email-container { width: 100% !important; min-width: 100% !important; }
-    .stack-column { display: block !important; width: 100% !important; }
+    .stack-column { display: block !important; width: 100% !important; padding: 0 !important; margin: 0 0 16px !important; box-sizing: border-box !important; }
     img { max-width: 100% !important; height: auto !important; }
+    /* Column images: full-width, fixed crop height so all images line up */
+    .col-img { width: 100% !important; height: 220px !important; max-height: 220px !important; object-fit: cover !important; margin-bottom: 10px !important; }
     /* Banner: stack cells vertically and scale image to width */
     .banner-table, .banner-table tr, .banner-table tbody { display: block !important; width: 100% !important; }
     .banner-cell { display: block !important; width: 100% !important; height: auto !important; box-sizing: border-box !important; }
