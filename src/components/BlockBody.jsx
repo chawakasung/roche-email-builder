@@ -213,7 +213,6 @@ export function BlockBody({ kind, props, brand, editing, onEdit, onCloseLetter }
     case 'language': return <LanguageBlock props={props} brand={brand} ce={ce} />;
     case 'footer': return (
       <div className="e-footer">
-        <img src="/design-system/assets/roche-logo-blue.svg" alt="Roche" />
         <div className="e-footer__addr" {...ce('address')}>{props.address}</div>
         <div className="e-footer__rule" />
         <div {...ce('links')}>{props.links}</div>

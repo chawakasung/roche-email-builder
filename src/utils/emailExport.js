@@ -228,8 +228,8 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
       const linkHref = esc(props.linkHref || '#');
       return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0">
         <tr><td align="right" style="padding:8px 32px 0;text-align:right;">
-          <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-style:italic;color:#706B69;margin:0 0 6px;text-align:right;">${note}</p>
-          <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${primary};margin:0;text-align:right;"><a href="${linkHref}" style="color:${primary};text-decoration:underline;">${linkText}</a></p>
+          <p class="notice-text" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-style:italic;color:#706B69;margin:0 0 6px;text-align:right;">${note}</p>
+          <p class="notice-text" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:${primary};margin:0;text-align:right;"><a href="${linkHref}" style="color:${primary};text-decoration:underline;">${linkText}</a></p>
         </td></tr>
       </table>`;
     }
@@ -416,6 +416,8 @@ export function generateEmailHTML(blocks, settings) {
     .webinar-img-col { padding: 0 0 16px !important; text-align: center !important; }
     .webinar-content-col { text-align: center !important; padding: 0 !important; }
     .webinar-cta-table { margin: 0 auto !important; }
+    /* Notice: shrink to footer-size on mobile */
+    .notice-text, .notice-text a { font-size: 11px !important; line-height: 1.5 !important; }
     /* Banner: stack cells vertically and scale image to width */
     .banner-table, .banner-table tr, .banner-table tbody { display: block !important; width: 100% !important; }
     .banner-cell { display: block !important; width: 100% !important; height: auto !important; box-sizing: border-box !important; }

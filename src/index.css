@@ -229,6 +229,8 @@ button { font-family: inherit; }
 .device-shell.mobile .e-webinar__title { text-align: center; }
 .device-shell.mobile .e-webinar__content { text-align: center; }
 .device-shell.mobile .e-webinar__cta { padding: 14px 56px; }
+.device-shell.mobile .e-notice__note,
+.device-shell.mobile .e-notice__link { font-size: 11px !important; line-height: 1.5 !important; }
 
 .e-notice { padding: 8px 32px 0; }
 .e-notice__note { font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-style: italic; color: var(--fg-2); margin: 0 0 6px; text-align: right; }
