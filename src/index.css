@@ -198,8 +198,9 @@ button { font-family: inherit; }
 .e-button { display: inline-block; padding: 12px 26px; background: var(--roche-blue); color: #fff; text-decoration: none; font-size: 13px; font-weight: 500; }
 .e-divider-wrap { padding: 16px 32px; }
 .e-divider { height: 1px; background: var(--hairline); }
-.e-notice { padding: 8px 32px 0; text-align: right; }
-.e-notice__note { font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-style: italic; color: var(--fg-2); margin: 0 0 6px; }
+.e-notice { padding: 8px 32px 0; }
+.e-notice__note { font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-style: italic; color: var(--fg-2); margin: 0 0 6px; text-align: right; }
+.e-notice__linkrow { margin: 0; text-align: right; }
 .e-notice__link { font-family: Arial, Helvetica, sans-serif; font-size: 13px; text-decoration: underline; }
 .e-spacer { width: 100%; position: relative; background: repeating-linear-gradient(45deg, transparent 0 6px, rgba(11,65,205,.06) 6px 12px); display: flex; align-items: center; justify-content: center; }
 .block:not(.is-selected):not(:hover) .e-spacer { background: transparent; }

@@ -99,7 +99,7 @@ export function BlockBody({ kind, props, brand, editing, onEdit, onCloseLetter }
     case 'notice': return (
       <div className="e-notice">
         <p className="e-notice__note" {...ce('note')}>{props.note}</p>
-        <a className="e-notice__link" style={{ color: brand.primary }} href={props.linkHref || '#'} {...ce('linkText')}>{props.linkText}</a>
+        <p className="e-notice__linkrow"><a className="e-notice__link" style={{ color: brand.primary }} href={props.linkHref || '#'} {...ce('linkText')}>{props.linkText}</a></p>
       </div>
     );
     case 'quote': return (
