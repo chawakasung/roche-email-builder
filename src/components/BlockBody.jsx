@@ -114,7 +114,6 @@ export function BlockBody({ kind, props, brand, editing, onEdit, onCloseLetter }
     );
     case 'podcast': return <PodcastBlock props={props} brand={brand} ce={ce} />;
     case 'language': return <LanguageBlock props={props} brand={brand} ce={ce} />;
-    case 'mediaform': return <MediaFormBlock props={props} brand={brand} />;
     case 'footer': return (
       <div className="e-footer">
         <img src="/design-system/assets/roche-logo-blue.svg" alt="Roche" />
@@ -388,44 +387,3 @@ function LanguageBlock({ props, brand, ce }) {
   );
 }
 
-function MediaFormBlock({ props, brand }) {
-  const fields = [
-    props.show_name     && { key:'name',     label:'Name',                  required:true },
-    props.show_surname  && { key:'surname',  label:'Surname',               required:true },
-    props.show_position && { key:'position', label:'Position / Specialty',  required:false },
-    props.show_org      && { key:'org',      label:'Organization',          required:false },
-    props.show_email    && { key:'email',    label:'Email',                 required:true, type:'email' },
-    props.show_medid    && { key:'medid',    label:'Medical Technician ID', required:false },
-  ].filter(Boolean);
-  return (
-    <div className="e-mediaform">
-      {props.title && <h2 className="e-mediaform__title">{props.title}</h2>}
-      <div className="e-mediaform__grid">
-        {fields.map(f => (
-          <div className="e-mediaform__field" key={f.key}>
-            <label className="e-mediaform__label">{f.label}{f.required && <span className="e-mediaform__req">*</span>}</label>
-            <input className="e-mediaform__input" type={f.type || 'text'} disabled />
-          </div>
-        ))}
-      </div>
-      <div className="e-mediaform__checks">
-        {props.show_chk1 && (
-          <label className="e-mediaform__check">
-            <input type="checkbox" disabled />
-            <span>I would like to receive information from Roche</span>
-          </label>
-        )}
-        {props.show_chk2 && (
-          <label className="e-mediaform__check">
-            <input type="checkbox" disabled />
-            <span>I agree to allow Roche to use and store the personal data provided by me to send me marketing communications.</span>
-          </label>
-        )}
-      </div>
-      <div className="e-mediaform__footer">
-        <button className="e-mediaform__submit" style={{ background: brand.primary }} disabled>{props.submit_label || 'Submit'}</button>
-        <p className="e-mediaform__privacy">By clicking submit, you agree to Roche's <a href="https://www.roche.com/privacy-policy" style={{ color: brand.primary }}>Privacy Policy</a>.</p>
-      </div>
-    </div>
-  );
-}

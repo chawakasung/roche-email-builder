@@ -103,11 +103,6 @@ export const DEFAULT_PROPS = {
     examples: 'For example:',
     languages: 'auf Deutsch | 中文 | em português | en français | en español',
   },
-  mediaform: {
-    title: 'Media Registration', submit_label: 'Submit', submit_href: 'https://roche.com/register',
-    show_name: true, show_surname: true, show_position: true, show_org: true,
-    show_email: true, show_medid: true, show_chk1: true, show_chk2: true,
-  },
   footer: {
     address: 'F. Hoffmann-La Roche Ltd · Grenzacherstrasse 124 · 4070 Basel, Switzerland',
     links: 'Contact · Privacy notice · Unsubscribe',
@@ -253,19 +248,6 @@ export const FIELDS = {
     ['prompt', L('Language prompt', 'ข้อความชี้ชวน'), 'text'],
     ['examples', L('Examples label', 'ป้ายตัวอย่าง'), 'text'],
     ['languages', L('Languages (separated by |)', 'ภาษาต่างๆ (คั่นด้วย |)'), 'text'],
-  ],
-  mediaform: [
-    ['title', L('Form title', 'ชื่อฟอร์ม'), 'text'],
-    ['submit_label', L('Submit label', 'ป้ายส่ง'), 'text'],
-    ['submit_href', L('Submit URL', 'ลิงก์ส่ง'), 'url'],
-    ['show_name',     L('Name field', 'ชื่อ'),                    'toggle'],
-    ['show_surname',  L('Surname field', 'นามสกุล'),              'toggle'],
-    ['show_position', L('Position/Specialty', 'ตำแหน่ง'),         'toggle'],
-    ['show_org',      L('Organization', 'องค์กร'),                'toggle'],
-    ['show_email',    L('Email field', 'อีเมล'),                  'toggle'],
-    ['show_medid',    L('Medical Technician ID', 'รหัสนักเทคนิค'), 'toggle'],
-    ['show_chk1',     L('Checkbox 1 (receive info)', 'ช่องรับข้อมูล'), 'toggle'],
-    ['show_chk2',     L('Checkbox 2 (consent)', 'ช่องยินยอม'),    'toggle'],
   ],
   footer: [
     ['address', L('Address', 'ที่อยู่'), 'text'],

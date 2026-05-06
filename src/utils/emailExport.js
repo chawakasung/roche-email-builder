@@ -293,52 +293,6 @@ function blockToEmailHTML(kind, props, primary, heroBg) {
       </table>`;
     }
 
-    case 'mediaform': {
-      // Email clients can't run real <form>s. We render the fields as visual
-      // mockups (styled empty boxes) so the recipient sees what to fill in;
-      // clicking Submit takes them to a real registration page on the web.
-      const fields = [
-        props.show_name     && { label: 'Name',                  required: true },
-        props.show_surname  && { label: 'Surname',               required: true },
-        props.show_position && { label: 'Position / Specialty',  required: false },
-        props.show_org      && { label: 'Organization',          required: false },
-        props.show_email    && { label: 'Email',                 required: true },
-        props.show_medid    && { label: 'Medical Technician ID', required: false },
-      ].filter(Boolean);
-      const formHref = esc(props.submit_href || '#');
-
-      const fieldRows = [];
-      for (let i = 0; i < fields.length; i += 2) {
-        const a = fields[i];
-        const b = fields[i + 1];
-        const cell = (f) => f ? `<td valign="top" width="50%" style="width:50%;padding:0 8px 16px 0;">
-          <div style="font-family:Arial,sans-serif;font-size:11px;color:#544F4F;margin:0 0 6px;letter-spacing:0.04em;">${esc(f.label)}${f.required ? ` <span style="color:#d6002a;">*</span>` : ''}</div>
-          <div style="border:1px solid #d8d5d0;background-color:#ffffff;height:36px;font-size:0;line-height:0;">&nbsp;</div>
-        </td>` : '<td width="50%" style="width:50%;">&nbsp;</td>';
-        fieldRows.push(`<tr>${cell(a)}${cell(b)}</tr>`);
-      }
-
-      const checkbox = (text) => `<tr><td colspan="2" style="padding:0 0 12px;">
-        <table border="0" cellpadding="0" cellspacing="0"><tr>
-          <td valign="top" width="22" style="width:22px;padding-top:2px;"><div style="width:14px;height:14px;border:1px solid #706B69;background-color:#ffffff;font-size:0;line-height:0;">&nbsp;</div></td>
-          <td valign="top" style="font-family:Arial,sans-serif;font-size:12px;color:#544F4F;line-height:1.5;">${esc(text)}</td>
-        </tr></table>
-      </td></tr>`;
-
-      return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0">
-        <tr><td style="padding:28px 32px;">
-          ${props.title ? `<h2 style="font-family:Arial,sans-serif;font-weight:300;font-size:24px;color:#544F4F;margin:0 0 20px;">${esc(props.title)}</h2>` : ''}
-          ${fields.length ? `<table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="margin:0 0 12px;">${fieldRows.join('')}</table>` : ''}
-          ${props.show_chk1 || props.show_chk2 ? `<table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="margin:8px 0 16px;">
-            ${props.show_chk1 ? checkbox('I would like to receive information from Roche') : ''}
-            ${props.show_chk2 ? checkbox('I agree to allow Roche to use and store the personal data provided by me to send me marketing communications.') : ''}
-          </table>` : ''}
-          <a href="${formHref}" style="display:inline-block;padding:11px 28px;background-color:${primary};color:#ffffff;text-decoration:none;font-family:Arial,sans-serif;font-size:14px;font-weight:500;">${esc(props.submit_label || 'Submit')}</a>
-          <p style="font-family:Arial,sans-serif;font-size:11px;color:#706B69;margin:14px 0 0;line-height:1.5;">By clicking submit, you agree to Roche's <a href="https://www.roche.com/privacy-policy" style="color:${primary};">Privacy Policy</a>.</p>
-        </td></tr>
-      </table>`;
-    }
-
     case 'footer': {
       const address = esc(props.address || '');
       const links = esc(props.links || '');
