@@ -105,7 +105,7 @@ export const DEFAULT_PROPS = {
     languages: 'auf Deutsch | 中文 | em português | en français | en español',
   },
   mediaform: {
-    title: 'Media Registration', submit_label: 'Submit',
+    title: 'Media Registration', submit_label: 'Submit', submit_href: 'https://roche.com/register',
     show_name: true, show_surname: true, show_position: true, show_org: true,
     show_email: true, show_medid: true, show_chk1: true, show_chk2: true,
   },
@@ -258,6 +258,7 @@ export const FIELDS = {
   mediaform: [
     ['title', L('Form title', 'ชื่อฟอร์ม'), 'text'],
     ['submit_label', L('Submit label', 'ป้ายส่ง'), 'text'],
+    ['submit_href', L('Submit URL', 'ลิงก์ส่ง'), 'url'],
     ['show_name',     L('Name field', 'ชื่อ'),                    'toggle'],
     ['show_surname',  L('Surname field', 'นามสกุล'),              'toggle'],
     ['show_position', L('Position/Specialty', 'ตำแหน่ง'),         'toggle'],
