@@ -1,7 +1,34 @@
 import { useState, useRef } from 'react';
+import html2canvas from 'html2canvas';
 import { Lbl } from './Panels.jsx';
 import { TOPBAR_ICONS as I } from './icons.jsx';
 import { SAMPLE_CSV, parseCSV, isValidEmail } from '../utils/csvParser.js';
+
+// For each banner ('header') block, screenshot the live canvas DOM at its native
+// 750x205 size and stash the PNG data URL on the block. The server then renders
+// that PNG as a single full-width image instead of a split HTML/CSS layout —
+// which reliably handles mobile scaling and avoids per-client rendering quirks.
+async function rasteriseBanners(blocks) {
+  return Promise.all(blocks.map(async (b) => {
+    if (b.kind !== 'header') return b;
+    const el = document.querySelector(`[data-block-id="${b.id}"] .e-banner__wrap`);
+    if (!el) return b;
+    try {
+      const canvas = await html2canvas(el, {
+        width: 750,
+        height: 205,
+        scale: 2,
+        backgroundColor: null,
+        useCORS: true,
+        logging: false,
+      });
+      return { ...b, props: { ...b.props, _renderedImg: canvas.toDataURL('image/png') } };
+    } catch (e) {
+      console.warn('Banner rasterise failed:', e);
+      return b;
+    }
+  }));
+}
 
 export function SendModal({ blocks, settings, onClose, lang, onToast }) {
   const [source, setSource] = useState('csv');
@@ -18,10 +45,11 @@ export function SendModal({ blocks, settings, onClose, lang, onToast }) {
   const fileRef = useRef(null);
 
   async function callSendAPI(targets, isTest) {
+    const rasterised = await rasteriseBanners(blocks);
     const r = await fetch('/api/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ blocks, settings, recipients: targets, test: isTest }),
+      body: JSON.stringify({ blocks: rasterised, settings, recipients: targets, test: isTest }),
     });
     const data = await r.json().catch(() => ({}));
     if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);

@@ -20,6 +20,16 @@ function rocheLogoImg(flipped = false) {
 function blockToEmailHTML(kind, props, primary, heroBg) {
   switch (kind) {
     case 'header': {
+      // If the client rasterised the live banner DOM into a PNG, just embed it
+      // as a single full-width image. Scales naturally on mobile, looks
+      // identical to the canvas, sidesteps every email-client CSS quirk.
+      if (props._renderedImg) {
+        const alt = esc(props.headline || 'Email banner');
+        return `<table role="presentation" width="750" border="0" cellpadding="0" cellspacing="0" style="width:750px;">
+          <tr><td style="padding:0;font-size:0;line-height:0;"><img src="${props._renderedImg}" width="750" alt="${alt}" style="display:block;border:0;outline:none;text-decoration:none;width:100%;max-width:750px;height:auto;" /></td></tr>
+        </table>`;
+      }
+      // Fallback: HTML/CSS layout (used by HTML download, where we don't rasterise)
       const bg = esc(props.bgColor || '#FFF7F5');
       const fs = Number(props.fontSize) || 26;
       const headline = esc(props.headline || '');

@@ -40,7 +40,8 @@ async function cropImage(dataUrl, w, h, position) {
 
 async function preprocessBlocks(blocks) {
   return Promise.all(blocks.map(async (b) => {
-    if (b.kind === 'header' && b.props?.img) {
+    if (b.kind === 'header' && b.props?.img && !b.props._renderedImg) {
+      // Only sharp-crop when the client didn't already rasterise the whole banner
       const x = b.props.imgX != null ? b.props.imgX : 50;
       const y = b.props.imgY != null ? b.props.imgY : 50;
       const cropped = await cropImage(b.props.img, 340, 205, imgPosToSharp(x, y));
