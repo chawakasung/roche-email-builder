@@ -18,7 +18,6 @@ export const BLOCK_LIBRARY = [
   { kind: 'button',    label: L('Button / CTA', 'ปุ่มกระทำ'),            group: 'elements' },
   { kind: 'divider',   label: L('Divider', 'เส้นคั่น'),                  group: 'elements' },
   { kind: 'quote',     label: L('Pull Quote', 'คำพูดอ้างอิง'),           group: 'elements' },
-  { kind: 'mediaform', label: L('Media Form', 'แบบฟอร์มสื่อ'),           group: 'elements' },
   { kind: 'footer',    label: L('Footer', 'ส่วนท้าย'),                   group: 'essentials' },
 ];
 
